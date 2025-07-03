@@ -1,0 +1,11 @@
+# Task ID: 5
+# Title: Implement Mock Data Services
+# Status: pending
+# Dependencies: 4
+# Priority: high
+# Description: Create service layer with simulated API responses
+# Details:
+Create lib/services/auth_service.dart, user_service.dart, post_service.dart, message_service.dart. Implement Future-based methods that simulate API calls with realistic delays. Use SharedPreferences for persistence. Create JSON files in assets/ for mock data. Implement error simulation for testing.
+
+# Test Strategy:
+Test all service methods return expected data structures, verify persistence works, test error scenarios

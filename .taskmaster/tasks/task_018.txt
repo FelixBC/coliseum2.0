@@ -1,0 +1,11 @@
+# Task ID: 18
+# Title: Implement User Profile Screen
+# Status: pending
+# Dependencies: 13
+# Priority: high
+# Description: Create profile display with posts grid
+# Details:
+Create lib/views/profile/my_profile_screen.dart and user_profile_screen.dart with user header (avatar, stats, bio), posts grid, and action buttons. Implement follow/unfollow functionality. Add edit profile option for own profile. Include message button for other users.
+
+# Test Strategy:
+Test profile data display, verify follow functionality, test posts grid performance

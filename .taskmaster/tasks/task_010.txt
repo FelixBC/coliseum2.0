@@ -1,0 +1,11 @@
+# Task ID: 10
+# Title: Build Welcome Screen
+# Status: pending
+# Dependencies: 9
+# Priority: medium
+# Description: Create welcome screen with authentication options
+# Details:
+Create lib/views/auth/welcome_screen.dart with app logo, tagline, and prominent 'Create Account' and 'Sign In' buttons. Implement smooth transitions to auth screens. Add social login buttons (Google, Apple) for future implementation. Use Material Design 3 elevated buttons.
+
+# Test Strategy:
+Test navigation to register/login screens, verify button interactions and animations

@@ -1,0 +1,11 @@
+# Task ID: 11
+# Title: Implement Authentication Screens
+# Status: pending
+# Dependencies: 10
+# Priority: high
+# Description: Create register and login forms with validation
+# Details:
+Create lib/views/auth/auth_screen.dart with TabBar for Register/Login. Implement form validation using Form widget and TextFormField. Add email/password fields with proper validation. Integrate with AuthViewModel for state management. Include forgot password functionality. Add loading states and error handling.
+
+# Test Strategy:
+Test form validation, verify authentication flow, test error handling and loading states

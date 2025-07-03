@@ -1,0 +1,11 @@
+# Task ID: 16
+# Title: Build Post Detail Screen
+# Status: pending
+# Dependencies: 14
+# Priority: medium
+# Description: Create detailed view for individual posts
+# Details:
+Create lib/views/feed/post_detail_screen.dart with expanded image view, full property details, comments section, and related posts. Implement image zoom functionality. Add map integration for property location. Include sharing and saving options.
+
+# Test Strategy:
+Test image zoom functionality, verify comments integration, test map display

@@ -1,0 +1,11 @@
+# Task ID: 24
+# Title: Create Map View for Properties
+# Status: pending
+# Dependencies: 23
+# Priority: medium
+# Description: Build map interface showing nearby properties
+# Details:
+Create lib/views/search/map_view_screen.dart with flutter_map showing property markers. Implement clustering for multiple properties. Add info cards on marker tap. Include current location and search area indicators. Support map type switching.
+
+# Test Strategy:
+Test map performance with multiple markers, verify clustering, test info cards

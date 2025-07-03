@@ -1,0 +1,11 @@
+# Task ID: 21
+# Title: Implement Media Picker
+# Status: pending
+# Dependencies: 20
+# Priority: medium
+# Description: Create camera and gallery selection interface
+# Details:
+Create lib/views/post/media_picker_screen.dart with camera preview and gallery grid. Support multiple image selection. Implement image compression and optimization. Add basic editing tools (crop, rotate). Use image_picker package with proper permissions.
+
+# Test Strategy:
+Test camera functionality, verify gallery access, test multiple selection

@@ -1,0 +1,11 @@
+# Task ID: 19
+# Title: Build Edit Profile Screen
+# Status: pending
+# Dependencies: 18
+# Priority: medium
+# Description: Create profile editing functionality
+# Details:
+Create lib/views/profile/edit_profile_screen.dart with form for name, bio, location, and profile picture. Implement image picker for avatar. Add validation and save functionality. Include location picker integration. Implement proper state management.
+
+# Test Strategy:
+Test form validation, verify image picker functionality, test save operation

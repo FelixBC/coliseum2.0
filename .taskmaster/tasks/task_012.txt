@@ -1,0 +1,11 @@
+# Task ID: 12
+# Title: Create Bottom Navigation Bar
+# Status: pending
+# Dependencies: 3, 7
+# Priority: high
+# Description: Implement main app navigation with 5 tabs
+# Details:
+Create lib/widgets/custom_bottom_nav_bar.dart with 5 tabs: Home, Search, Create, Messages, Profile. Use BottomNavigationBar with custom icons and labels. Implement navigation logic with GoRouter. Add badge support for notifications. Ensure accessibility compliance.
+
+# Test Strategy:
+Test navigation between all tabs, verify active state indicators, test accessibility features

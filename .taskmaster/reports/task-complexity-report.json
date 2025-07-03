@@ -1,0 +1,253 @@
+{
+	"meta": {
+		"generatedAt": "2025-06-30T17:20:06.123Z",
+		"tasksAnalyzed": 30,
+		"totalTasks": 30,
+		"analysisCount": 30,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": false
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Setup Flutter Project Structure and Dependencies",
+			"complexityScore": 4,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down the Flutter project setup into detailed steps covering project initialization, folder structure creation, dependency management, configuration files, and initial verification testing.",
+			"reasoning": "This task has moderate complexity as it involves multiple setup steps but follows standard Flutter practices. The existing 6 subtasks are appropriate for covering all aspects of project initialization."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "Create Theme Configuration and Constants",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Divide theme configuration into Material Design 3 color scheme setup, typography configuration, component theme definitions, and responsive design utilities creation.",
+			"reasoning": "Medium complexity due to Material Design 3 specifics and responsive design requirements. Needs careful attention to design system consistency and cross-platform compatibility."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Setup Navigation with GoRouter",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down navigation setup into route definition creation, GoRouter configuration, authentication guards implementation, deep linking setup, and navigation testing.",
+			"reasoning": "Higher complexity due to multiple route types, authentication guards, and deep linking requirements. GoRouter configuration can be intricate with nested routes and guards."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Create Base Models and Data Structures",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Separate model creation into individual entity models (User, Post, Property, Message, Comment, Story), JSON serialization setup, relationship model definitions, validation logic, and mock data generation.",
+			"reasoning": "Complex task involving multiple interconnected models with relationships. JSON serialization and proper data validation add complexity layers."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Implement Mock Data Services",
+			"complexityScore": 7,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Break down service implementation into individual service classes (AuthService, UserService, PostService, MessageService), mock data creation, persistence layer setup, error simulation, and service integration testing.",
+			"reasoning": "High complexity due to multiple service types, realistic API simulation, persistence requirements, and error handling scenarios. Requires careful architecture planning."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Setup State Management with Provider",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Divide state management into ViewModel creation for each feature area, ChangeNotifier implementation, Provider configuration, state lifecycle management, error state handling, and memory management optimization.",
+			"reasoning": "High complexity due to multiple ViewModels, proper state management patterns, and memory management concerns. Critical for app performance and maintainability."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Create Reusable UI Components",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break down component creation into navigation components, post-related widgets, user interface elements, form components, loading states, error states, theming integration, and responsive behavior implementation.",
+			"reasoning": "Moderate-high complexity due to multiple component types and consistency requirements. Foundation for entire UI system requires careful design."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Implement Splash Screen",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Divide splash screen into logo animation implementation, session check logic, navigation routing based on user state, and loading experience optimization.",
+			"reasoning": "Moderate complexity involving animation, session management, and routing logic. Relatively straightforward but important for user experience."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Create Onboarding Flow",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down onboarding into slide content creation, PageView implementation, navigation controls, animation and transitions, and completion state persistence.",
+			"reasoning": "Medium complexity with PageView management, animations, and state persistence. Standard pattern but requires attention to user experience details."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Build Welcome Screen",
+			"complexityScore": 3,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Divide welcome screen into UI layout and branding, authentication navigation setup, and social login button preparation for future implementation.",
+			"reasoning": "Lower complexity as it's primarily a static screen with navigation. Straightforward implementation with standard UI components."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Implement Authentication Screens",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down authentication into form UI creation, validation logic implementation, state management integration, error handling, loading states, and forgot password functionality.",
+			"reasoning": "High complexity due to form validation, state management integration, and multiple authentication flows. Critical user-facing functionality requiring robust implementation."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Create Bottom Navigation Bar",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Divide navigation bar into UI component creation, navigation logic implementation, badge system integration, and accessibility compliance setup.",
+			"reasoning": "Moderate complexity with navigation integration and badge system. Standard component but requires proper integration with routing system."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "Build Home Feed Screen",
+			"complexityScore": 8,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Break down feed screen into layout structure creation, stories integration, posts list implementation, pull-to-refresh functionality, infinite scroll setup, loading states, and performance optimization.",
+			"reasoning": "High complexity due to multiple interactive elements, performance considerations, and integration with various components. Core feature requiring careful implementation."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "Create Post Card Component",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Divide post card into layout structure, image handling and caching, interaction buttons and animations, property details display, multi-image support, and responsive design implementation.",
+			"reasoning": "High complexity due to image handling, animations, and multiple interaction types. Critical component used throughout the app requiring robust implementation."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "Implement Stories Feature",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down stories into viewer screen creation, progress indicator implementation, gesture handling (tap/hold), horizontal list integration, navigation logic, and story creation placeholder.",
+			"reasoning": "High complexity due to gesture handling, progress tracking, and fullscreen navigation. Complex user interaction patterns requiring careful implementation."
+		},
+		{
+			"taskId": 16,
+			"taskTitle": "Build Post Detail Screen",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Divide post detail into expanded image view, property details display, comments integration, map integration for location, and sharing functionality implementation.",
+			"reasoning": "Moderate-high complexity with image zoom, map integration, and multiple feature integrations. Requires coordination with several other components."
+		},
+		{
+			"taskId": 17,
+			"taskTitle": "Create Comments System",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down comments into UI layout creation, nested comment threading, comment input with emoji support, like functionality, reply system implementation, and user mention support.",
+			"reasoning": "High complexity due to nested threading, real-time interactions, and advanced features like mentions. Complex data structure and UI requirements."
+		},
+		{
+			"taskId": 18,
+			"taskTitle": "Implement User Profile Screen",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Divide profile screen into user header and stats display, posts grid implementation, follow/unfollow functionality, profile actions setup, and navigation between own/other profiles.",
+			"reasoning": "Moderate-high complexity with grid layouts, social interactions, and dual profile types. Requires integration with multiple data sources and actions."
+		},
+		{
+			"taskId": 19,
+			"taskTitle": "Build Edit Profile Screen",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down profile editing into form creation and validation, image picker integration for avatar, location picker integration, save functionality implementation, and state management integration.",
+			"reasoning": "Medium complexity with form handling, image picking, and location services. Standard CRUD operations with media handling complexity."
+		},
+		{
+			"taskId": 20,
+			"taskTitle": "Create Post Creation Flow",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Divide post creation into image selection interface, property details form, location picker integration, preview functionality, validation and submission, and draft saving capability.",
+			"reasoning": "High complexity due to multi-step flow, media handling, location services, and form validation. Critical feature requiring robust error handling and user experience."
+		},
+		{
+			"taskId": 21,
+			"taskTitle": "Implement Media Picker",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down media picker into camera interface implementation, gallery grid creation, multiple selection support, image compression and optimization, and basic editing tools integration.",
+			"reasoning": "High complexity due to camera integration, image processing, and platform-specific permissions. Requires careful handling of device capabilities and performance."
+		},
+		{
+			"taskId": 22,
+			"taskTitle": "Build Location Picker",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Divide location picker into map interface creation, location search implementation, current location detection, address geocoding setup, and recent locations management.",
+			"reasoning": "High complexity due to map integration, GPS services, and geocoding APIs. Requires handling of permissions and network connectivity issues."
+		},
+		{
+			"taskId": 23,
+			"taskTitle": "Implement Search Functionality",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down search into search interface creation, filtering system implementation, search history management, results display with tabs, debouncing logic, and map view integration.",
+			"reasoning": "High complexity due to multiple search types, filtering logic, and performance optimization requirements. Core feature requiring efficient implementation."
+		},
+		{
+			"taskId": 24,
+			"taskTitle": "Create Map View for Properties",
+			"complexityScore": 8,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Divide map view into map interface setup, marker clustering implementation, info card display on interaction, location services integration, and map type switching functionality.",
+			"reasoning": "High complexity due to map performance optimization, clustering algorithms, and real-time data display. Requires careful handling of large datasets and user interactions."
+		},
+		{
+			"taskId": 25,
+			"taskTitle": "Build Messages List Screen",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down messages list into conversation list display, search functionality, unread badge system, swipe actions implementation, and online status indicators.",
+			"reasoning": "Medium complexity with list management, search, and interactive elements. Standard messaging patterns but requires attention to real-time updates."
+		},
+		{
+			"taskId": 26,
+			"taskTitle": "Implement Chat Screen",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Divide chat screen into message bubble UI, input field and sending logic, message status indicators, typing indicators, timestamp display, and media sharing support.",
+			"reasoning": "High complexity due to real-time messaging simulation, status tracking, and media handling. Core communication feature requiring robust implementation."
+		},
+		{
+			"taskId": 27,
+			"taskTitle": "Create Notifications System",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down notifications into notification center UI, categorization system, badge management, mark as read functionality, and notification preferences integration.",
+			"reasoning": "Moderate-high complexity with categorization, state management, and user preferences. Requires integration with multiple app features for notification generation."
+		},
+		{
+			"taskId": 28,
+			"taskTitle": "Implement Settings Screen",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Divide settings into grouped settings UI, account settings management, theme and preferences handling, and logout functionality implementation.",
+			"reasoning": "Moderate complexity with preference management and theme switching. Standard settings patterns with some customization requirements."
+		},
+		{
+			"taskId": 29,
+			"taskTitle": "Add Loading States and Error Handling",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down loading and error handling into shimmer loading widgets creation, error boundary implementation, empty state designs, global error handling setup, and offline state detection.",
+			"reasoning": "Moderate-high complexity due to comprehensive error handling requirements and performance considerations. Critical for user experience across all features."
+		},
+		{
+			"taskId": 30,
+			"taskTitle": "Performance Optimization and Testing",
+			"complexityScore": 9,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Divide optimization into image caching optimization, lazy loading implementation, memory management, performance monitoring setup, widget testing creation, and cross-device testing.",
+			"reasoning": "Very high complexity requiring deep Flutter knowledge, performance profiling skills, and comprehensive testing strategies. Critical for app quality and user experience."
+		}
+	]
+}

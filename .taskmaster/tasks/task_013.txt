@@ -1,0 +1,11 @@
+# Task ID: 13
+# Title: Build Home Feed Screen
+# Status: pending
+# Dependencies: 11, 12
+# Priority: high
+# Description: Create Instagram-style feed with posts and stories
+# Details:
+Create lib/views/feed/home_screen.dart with CustomScrollView containing stories horizontal list and posts vertical list. Implement pull-to-refresh and infinite scroll. Use PostCard widgets with like, comment, share actions. Add stories viewer integration. Implement shimmer loading states.
+
+# Test Strategy:
+Test scroll performance, verify pull-to-refresh, test infinite loading, verify story integration

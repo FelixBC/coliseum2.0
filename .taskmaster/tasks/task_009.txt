@@ -1,0 +1,11 @@
+# Task ID: 9
+# Title: Create Onboarding Flow
+# Status: pending
+# Dependencies: 8
+# Priority: medium
+# Description: Build introduction screens with PageView
+# Details:
+Create lib/views/auth/onboarding_screen.dart with 3-4 slides explaining app features. Use PageView with smooth page indicators. Include skip functionality and next/previous navigation. Implement slide animations and transitions. Store onboarding completion in SharedPreferences.
+
+# Test Strategy:
+Test page navigation, verify skip functionality, test completion persistence

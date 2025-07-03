@@ -1,0 +1,11 @@
+# Task ID: 8
+# Title: Implement Splash Screen
+# Status: pending
+# Dependencies: 6, 7
+# Priority: high
+# Description: Create initial loading screen with logo and session check
+# Details:
+Create lib/views/auth/splash_screen.dart with Coliseum logo animation. Implement session check using SharedPreferences. Add 2-3 second delay for branding. Navigate to onboarding for new users or home for existing users. Use Lottie animations for smooth loading experience.
+
+# Test Strategy:
+Test navigation logic for new vs existing users, verify animation performance, test session persistence

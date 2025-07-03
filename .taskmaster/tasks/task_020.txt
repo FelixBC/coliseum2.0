@@ -1,0 +1,11 @@
+# Task ID: 20
+# Title: Create Post Creation Flow
+# Status: pending
+# Dependencies: 12
+# Priority: high
+# Description: Implement new post creation with image picker
+# Details:
+Create lib/views/post/create_post_screen.dart with image selection, property details form, location picker, and preview. Integrate image_picker for camera/gallery access. Add image editing capabilities (crop, filter). Implement location services with geolocator.
+
+# Test Strategy:
+Test image picker functionality, verify location services, test form validation

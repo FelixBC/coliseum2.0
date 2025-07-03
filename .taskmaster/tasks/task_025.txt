@@ -1,0 +1,11 @@
+# Task ID: 25
+# Title: Build Messages List Screen
+# Status: pending
+# Dependencies: 12
+# Priority: medium
+# Description: Create chat conversations overview
+# Details:
+Create lib/views/messages/messages_list_screen.dart with conversation list, search functionality, and unread badges. Implement swipe actions for delete/archive. Add online status indicators. Include new message floating action button.
+
+# Test Strategy:
+Test conversation list display, verify search functionality, test swipe actions

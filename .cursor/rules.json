@@ -1,0 +1,232 @@
+{
+  "project": {
+    "name": "Coliseum",
+    "type": "Flutter Mobile App",
+    "description": "Social mobile app with Instagram/Airbnb-inspired design, dark theme, modern UI",
+    "version": "1.0.0",
+    "target_platform": "iOS/Android"
+  },
+  "architecture": {
+    "pattern": "MVVM (Model-View-ViewModel)",
+    "frontend_only": true,
+    "no_backend": "All data should be mocked or use local storage",
+    "state_management": "Provider/Riverpod for MVVM implementation",
+    "folder_structure": {
+      "lib/": {
+        "models/": "Data models and entities with fromJson/toJson methods",
+        "views/": "UI screens organized by modules (auth/, feed/, profile/, etc.)",
+        "viewmodels/": "Business logic and state management extending ChangeNotifier",
+        "services/": "External services, utilities, and local storage",
+        "widgets/": "Reusable UI components organized by category",
+        "constants/": "App constants, colors, text styles, and routes"
+      }
+    }
+  },
+  "design_system": {
+    "theme": "Dark theme with modern aesthetics",
+    "inspiration": ["Instagram", "Airbnb"],
+    "visual_elements": {
+      "borders": "Rounded corners throughout the app (BorderRadius.circular(8-20))",
+      "typography": "Youthful, modern font choices (SF Pro Display/Text)",
+      "colors": "Dark palette with blue accent colors (#0095F6)",
+      "spacing": "Consistent 4px grid system (4, 8, 16, 24, 32, 48, 64)",
+      "shadows": "Subtle elevation effects for depth"
+    },
+    "navigation": {
+      "type": "Bottom navigation bar (Instagram-style)",
+      "tabs": ["Feed", "Search", "Create", "Notifications", "Profile"],
+      "colors": {
+        "background": "Color(0xFF000000)",
+        "selected": "Color(0xFF0095F6)",
+        "unselected": "Color(0xFF8E8E93)"
+      }
+    }
+  },
+  "screens": {
+    "total_count": 30,
+    "organization": "Grouped by functional modules",
+    "modules": {
+      "authentication": {
+        "screens": ["Login", "Register", "Forgot Password", "Profile Setup"],
+        "count": 4,
+        "description": "User authentication and onboarding"
+      },
+      "feed": {
+        "screens": ["Feed", "Post Detail", "Create Post", "Stories"],
+        "count": 4,
+        "description": "Main content feed and post creation"
+      },
+      "social": {
+        "screens": ["Profile", "User Profile", "Edit Profile", "Following/Followers"],
+        "count": 6,
+        "description": "User profiles and social connections"
+      },
+      "discovery": {
+        "screens": ["Search", "Explore", "Trending", "Categories", "Nearby"],
+        "count": 6,
+        "description": "Content discovery and exploration"
+      },
+      "messaging": {
+        "screens": ["Messages", "Chat", "New Message", "Group Chat"],
+        "count": 4,
+        "description": "Direct messaging and chat features"
+      },
+      "notifications": {
+        "screens": ["Notifications", "Notification Detail"],
+        "count": 2,
+        "description": "User notifications and alerts"
+      },
+      "settings": {
+        "screens": ["Settings", "Privacy", "Account", "Help"],
+        "count": 4,
+        "description": "App configuration and user preferences"
+      }
+    }
+  },
+  "development_guidelines": {
+    "code_style": {
+      "language": "Dart",
+      "framework": "Flutter",
+      "naming": {
+        "variables": "snake_case",
+        "functions": "snake_case", 
+        "classes": "PascalCase",
+        "files": "snake_case",
+        "constants": "UPPER_SNAKE_CASE"
+      },
+      "file_suffixes": {
+        "models": "_model.dart",
+        "services": "_service.dart", 
+        "viewmodels": "_viewmodel.dart",
+        "screens": "_screen.dart",
+        "widgets": "descriptive_name.dart"
+      },
+      "comments": "Clear documentation for complex logic and business rules"
+    },
+    "components": {
+      "reusability": "Create reusable widgets for common UI elements",
+      "consistency": "Follow design system patterns from .cursor/screenshots",
+      "accessibility": "Include proper accessibility labels and semantic widgets",
+      "performance": "Use const constructors and efficient widget rebuilding"
+    },
+    "mvvm_patterns": {
+      "views": "StatelessWidget with ViewModel integration via Consumer/Provider",
+      "viewmodels": "Extend ChangeNotifier, call notifyListeners() after state changes",
+      "models": "Data classes with fromJson/toJson, copyWith, and equality methods",
+      "services": "Abstract classes with concrete implementations for testability"
+    }
+  },
+  "visual_reference": {
+    "screenshots": {
+      "location": ".cursor/screenshots/",
+      "usage": "MANDATORY reference for component design and layout",
+      "organization": "Instagram iOS screenshots showing UI patterns",
+      "compliance": "All components must match screenshot designs"
+    },
+    "design_tokens": {
+      "colors": {
+        "primary_background": "Color(0xFF000000)",
+        "secondary_background": "Color(0xFF121212)",
+        "card_background": "Color(0xFF262626)",
+        "text_primary": "Color(0xFFFFFFFF)",
+        "text_secondary": "Color(0xFFB3B3B3)",
+        "accent_blue": "Color(0xFF0095F6)",
+        "border_color": "Color(0xFF404040)"
+      },
+      "typography": {
+        "headline": "fontSize: 24-32, fontWeight: FontWeight.w600-w700",
+        "title": "fontSize: 16-22, fontWeight: FontWeight.w600",
+        "body": "fontSize: 14-16, fontWeight: FontWeight.w400",
+        "caption": "fontSize: 12-14, fontWeight: FontWeight.w400-w500"
+      },
+      "spacing": {
+        "xs": "4.0",
+        "sm": "8.0", 
+        "md": "16.0",
+        "lg": "24.0",
+        "xl": "32.0"
+      },
+      "border_radius": {
+        "small": "BorderRadius.circular(8.0)",
+        "medium": "BorderRadius.circular(12.0)",
+        "large": "BorderRadius.circular(16.0)",
+        "full": "BorderRadius.circular(50.0)"
+      }
+    }
+  },
+  "folder_structure_compliance": {
+    "strict": true,
+    "description": "Codex must respect the established MVVM folder structure",
+    "components": "Visual components must match screenshots in .cursor/screenshots",
+    "validation": {
+      "views": "Must be in appropriate module folder (auth/, feed/, profile/, etc.)",
+      "viewmodels": "Must correspond to views and handle business logic",
+      "models": "Must include proper data serialization methods",
+      "widgets": "Must be categorized (common/, feed/, profile/, navigation/)"
+    }
+  },
+  "priorities": {
+    "mandatory": [
+      "Frontend-only development (no backend integration)",
+      "MVVM architecture with clear separation of concerns",
+      "Instagram-style bottom navigation with 5 tabs",
+      "Dark theme with rounded corners throughout",
+      "Youthful, modern typography (SF Pro family)",
+      "30 screens organized into 7 functional modules",
+      "Visual compliance with .cursor/screenshots reference"
+    ],
+    "performance": [
+      "Const constructors for immutable widgets",
+      "Efficient state management with Provider/Riverpod",
+      "Proper disposal of controllers and streams",
+      "Optimized image loading and caching"
+    ],
+    "code_quality": [
+      "Consistent naming conventions across all files",
+      "Comprehensive error handling and validation",
+      "Accessibility support for all interactive elements",
+      "Unit tests for ViewModels and business logic"
+    ]
+  },
+  "constraints": {
+    "no_backend": "All data operations must use local storage or mock data",
+    "no_external_apis": "Focus purely on UI/UX implementation",
+    "design_fidelity": "Must match visual patterns from Instagram screenshots",
+    "platform_support": "Primary focus on mobile (iOS/Android)",
+    "state_management": "Use Provider or Riverpod, avoid setState for complex state"
+  },
+  "component_guidelines": {
+    "buttons": {
+      "primary": "Blue accent (#0095F6), rounded corners, proper padding",
+      "secondary": "Dark background with border, white text",
+      "text": "Blue text, no background, minimal padding"
+    },
+    "cards": {
+      "post_card": "Dark background, rounded corners, proper spacing",
+      "profile_card": "Elevated appearance, consistent padding",
+      "story_card": "Circular design with gradient borders"
+    },
+    "inputs": {
+      "text_field": "Dark background, rounded borders, focus states",
+      "search_field": "Pill-shaped design, icon integration"
+    },
+    "navigation": {
+      "bottom_nav": "5 tabs, icon + label, blue selection indicator",
+      "app_bar": "Dark background, minimal elevation, back button"
+    }
+  },
+  "file_organization": {
+    "imports": {
+      "order": ["Flutter", "Dart", "Package", "Local"],
+      "grouping": "Group related imports with blank lines"
+    },
+    "class_structure": {
+      "order": ["Constants", "Variables", "Constructor", "Lifecycle", "Public", "Private"]
+    },
+    "documentation": {
+      "classes": "Brief description of purpose and usage",
+      "methods": "Complex business logic should have clear comments",
+      "widgets": "Describe props, state, and behavior"
+    }
+  }
+} 

@@ -1,0 +1,11 @@
+# Task ID: 17
+# Title: Create Comments System
+# Status: pending
+# Dependencies: 16
+# Priority: medium
+# Description: Implement comments display and interaction
+# Details:
+Create lib/views/feed/comments_screen.dart with nested comments support. Implement comment input with emoji support. Add like functionality for comments. Create reply system with proper threading. Include user mention support (@username).
+
+# Test Strategy:
+Test comment submission, verify nested replies, test like functionality

@@ -1,0 +1,11 @@
+# Task ID: 3
+# Title: Setup Navigation with GoRouter
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Configure named routes and navigation structure
+# Details:
+Create lib/constants/routes.dart with route definitions. Setup GoRouter configuration in main.dart with routes: /home, /search, /create, /messages, /profile, /auth/login, /auth/register, /post/:id, /user/:id, /chat/:id. Implement route guards for authentication. Configure deep linking support.
+
+# Test Strategy:
+Test navigation between all routes, verify route parameters work correctly, test authentication guards

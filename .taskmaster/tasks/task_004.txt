@@ -1,0 +1,11 @@
+# Task ID: 4
+# Title: Create Base Models and Data Structures
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Define core data models for User, Post, Message, and other entities
+# Details:
+Create lib/models/ with User, Post, Property, Message, Comment, Story models. Implement JSON serialization/deserialization with built_value or json_annotation. Define relationship models for followers, likes, etc. Create mock data generators for testing.
+
+# Test Strategy:
+Unit tests for model serialization/deserialization, verify mock data generation works correctly

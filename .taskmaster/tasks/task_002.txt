@@ -1,0 +1,11 @@
+# Task ID: 2
+# Title: Create Theme Configuration and Constants
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Implement Material Design 3 dark theme and app constants
+# Details:
+Create lib/constants/theme.dart with Material Design 3 dark theme configuration. Define color scheme, typography, and component themes. Create lib/constants/app_constants.dart for strings, dimensions, and configuration values. Implement responsive design utilities for different screen sizes.
+
+# Test Strategy:
+Test theme consistency across different widgets and screen sizes, verify dark theme implementation

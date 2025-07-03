@@ -1,0 +1,11 @@
+# Task ID: 28
+# Title: Implement Settings Screen
+# Status: pending
+# Dependencies: 18
+# Priority: low
+# Description: Create app configuration and preferences
+# Details:
+Create lib/views/settings/settings_screen.dart with grouped settings options. Include account settings, privacy controls, notification preferences, and app information. Implement theme switching and language selection. Add logout functionality.
+
+# Test Strategy:
+Test settings persistence, verify logout functionality, test theme switching

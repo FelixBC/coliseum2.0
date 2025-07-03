@@ -1,0 +1,11 @@
+# Task ID: 14
+# Title: Create Post Card Component
+# Status: pending
+# Dependencies: 7
+# Priority: high
+# Description: Build reusable post display component
+# Details:
+Create lib/widgets/post_card.dart with user header, property image, action buttons (like, comment, share), description, and location. Use CachedNetworkImage for images. Implement like animation and comment count display. Add property details overlay. Support multiple images with PageView.
+
+# Test Strategy:
+Test image loading and caching, verify interaction animations, test responsive layout

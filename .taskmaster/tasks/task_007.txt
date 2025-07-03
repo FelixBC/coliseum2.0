@@ -1,0 +1,11 @@
+# Task ID: 7
+# Title: Create Reusable UI Components
+# Status: pending
+# Dependencies: 2
+# Priority: medium
+# Description: Build common widgets and components
+# Details:
+Create lib/widgets/ with CustomAppBar, CustomBottomNavBar, PostCard, UserAvatar, LoadingShimmer, EmptyState, ErrorState components. Implement consistent styling and theming. Create form input widgets with validation. Use Material Design 3 components.
+
+# Test Strategy:
+Test components in isolation, verify theming consistency, test responsive behavior

@@ -1,0 +1,11 @@
+# Task ID: 27
+# Title: Create Notifications System
+# Status: pending
+# Dependencies: 13
+# Priority: medium
+# Description: Build notifications center and handling
+# Details:
+Create lib/views/feed/notifications_screen.dart with categorized notifications (likes, comments, follows, messages). Implement notification badges and mark as read functionality. Add notification preferences. Create notification models and mock data.
+
+# Test Strategy:
+Test notification display, verify badge updates, test mark as read functionality

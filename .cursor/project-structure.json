@@ -1,0 +1,444 @@
+{
+  "project": {
+    "name": "Coliseum",
+    "framework": "Flutter",
+    "architecture": "MVVM",
+    "description": "Social mobile app with Instagram/Airbnb-inspired design",
+    "target_platforms": ["iOS", "Android"]
+  },
+  "folder_structure": {
+    "lib/": {
+      "description": "Main application source code",
+      "models/": {
+        "description": "Data models and entities",
+        "files": [
+          "user_model.dart",
+          "post_model.dart",
+          "story_model.dart",
+          "comment_model.dart",
+          "notification_model.dart",
+          "message_model.dart",
+          "settings_model.dart",
+          "follow_model.dart"
+        ],
+        "conventions": {
+          "naming": "snake_case",
+          "suffix": "_model",
+          "structure": "Data classes with fromJson/toJson methods",
+          "required_methods": ["fromJson", "toJson", "copyWith", "toString", "operator ==", "hashCode"]
+        },
+        "example": "class UserModel { final String id; final String username; ... }"
+      },
+      "services/": {
+        "description": "External services, APIs, and utilities",
+        "files": [
+          "auth_service.dart",
+          "storage_service.dart",
+          "navigation_service.dart",
+          "analytics_service.dart",
+          "local_storage_service.dart",
+          "image_service.dart",
+          "notification_service.dart"
+        ],
+        "conventions": {
+          "naming": "snake_case",
+          "suffix": "_service",
+          "structure": "Abstract classes with concrete implementations",
+          "pattern": "Interface + Implementation"
+        },
+        "example": "abstract class AuthService { Future<User?> login(); } class AuthServiceImpl implements AuthService { ... }"
+      },
+      "viewmodels/": {
+        "description": "Business logic and state management",
+        "files": [
+          "auth_viewmodel.dart",
+          "feed_viewmodel.dart",
+          "profile_viewmodel.dart",
+          "search_viewmodel.dart",
+          "messages_viewmodel.dart",
+          "notifications_viewmodel.dart",
+          "settings_viewmodel.dart",
+          "create_post_viewmodel.dart"
+        ],
+        "conventions": {
+          "naming": "snake_case",
+          "suffix": "_viewmodel",
+          "structure": "Extend ChangeNotifier or use Provider/Riverpod",
+          "required_methods": ["notifyListeners", "dispose"]
+        },
+        "example": "class FeedViewModel extends ChangeNotifier { List<Post> posts = []; void loadPosts() { ... notifyListeners(); } }"
+      },
+      "views/": {
+        "description": "UI screens organized by modules",
+        "modules": {
+          "auth/": {
+            "description": "Authentication screens",
+            "files": [
+              "login_screen.dart",
+              "register_screen.dart",
+              "forgot_password_screen.dart",
+              "profile_setup_screen.dart"
+            ]
+          },
+          "feed/": {
+            "description": "Main feed and post content",
+            "files": [
+              "feed_screen.dart",
+              "post_detail_screen.dart",
+              "create_post_screen.dart",
+              "stories_screen.dart",
+              "story_view_screen.dart"
+            ]
+          },
+          "profile/": {
+            "description": "User profile and management",
+            "files": [
+              "profile_screen.dart",
+              "edit_profile_screen.dart",
+              "user_profile_screen.dart",
+              "followers_screen.dart",
+              "following_screen.dart",
+              "saved_posts_screen.dart"
+            ]
+          },
+          "search/": {
+            "description": "Search and discovery",
+            "files": [
+              "search_screen.dart",
+              "explore_screen.dart",
+              "trending_screen.dart",
+              "categories_screen.dart",
+              "nearby_screen.dart",
+              "hashtag_screen.dart"
+            ]
+          },
+          "messages/": {
+            "description": "Chat and messaging",
+            "files": [
+              "messages_screen.dart",
+              "chat_screen.dart",
+              "new_message_screen.dart",
+              "group_chat_screen.dart"
+            ]
+          },
+          "notifications/": {
+            "description": "Notifications and alerts",
+            "files": [
+              "notifications_screen.dart",
+              "notification_detail_screen.dart"
+            ]
+          },
+          "settings/": {
+            "description": "App settings and configuration",
+            "files": [
+              "settings_screen.dart",
+              "privacy_screen.dart",
+              "account_screen.dart",
+              "help_screen.dart"
+            ]
+          }
+        },
+        "conventions": {
+          "naming": "snake_case",
+          "suffix": "_screen",
+          "structure": "StatelessWidget with ViewModel integration",
+          "required_pattern": "Consumer<ViewModel> or ChangeNotifierProvider"
+        }
+      },
+      "widgets/": {
+        "description": "Reusable UI components",
+        "categories": {
+          "common/": {
+            "description": "Generic reusable widgets",
+            "files": [
+              "custom_button.dart",
+              "custom_text_field.dart",
+              "loading_indicator.dart",
+              "error_widget.dart",
+              "custom_dialog.dart",
+              "empty_state_widget.dart"
+            ]
+          },
+          "feed/": {
+            "description": "Feed-specific widgets",
+            "files": [
+              "post_card.dart",
+              "story_circle.dart",
+              "story_row.dart",
+              "like_button.dart",
+              "comment_section.dart",
+              "share_button.dart"
+            ]
+          },
+          "profile/": {
+            "description": "Profile-specific widgets",
+            "files": [
+              "profile_header.dart",
+              "stats_row.dart",
+              "bio_section.dart",
+              "profile_grid.dart",
+              "follow_button.dart"
+            ]
+          },
+          "navigation/": {
+            "description": "Navigation components",
+            "files": [
+              "bottom_nav_bar.dart",
+              "custom_app_bar.dart",
+              "tab_bar.dart",
+              "drawer_widget.dart"
+            ]
+          },
+          "messaging/": {
+            "description": "Chat and messaging widgets",
+            "files": [
+              "message_bubble.dart",
+              "chat_input.dart",
+              "conversation_tile.dart",
+              "typing_indicator.dart"
+            ]
+          }
+        },
+        "conventions": {
+          "naming": "snake_case",
+          "suffix": "Based on widget type (no specific suffix required)",
+          "structure": "StatelessWidget with clear props and documentation",
+          "required_props": "All required parameters should be final"
+        }
+      },
+      "constants/": {
+        "description": "App constants and configuration",
+        "files": [
+          "app_colors.dart",
+          "app_text_styles.dart",
+          "app_sizes.dart",
+          "app_strings.dart",
+          "routes.dart",
+          "assets.dart",
+          "api_endpoints.dart"
+        ],
+        "conventions": {
+          "naming": "snake_case",
+          "structure": "Static classes with const values",
+          "organization": "Group related constants together"
+        }
+      }
+    },
+    "assets/": {
+      "description": "Static assets",
+      "structure": {
+        "images/": "App images and icons",
+        "fonts/": "Custom fonts (SF Pro family)",
+        "animations/": "Lottie animations or other motion assets"
+      }
+    },
+    "test/": {
+      "description": "Unit and widget tests",
+      "structure": {
+        "unit/": "ViewModel and service tests",
+        "widget/": "Widget tests",
+        "integration/": "End-to-end tests"
+      }
+    }
+  },
+  "naming_conventions": {
+    "general": {
+      "variables": "snake_case (e.g., user_name, post_count)",
+      "functions": "snake_case (e.g., load_posts, navigate_to_profile)",
+      "classes": "PascalCase (e.g., UserModel, FeedViewModel)",
+      "constants": "UPPER_SNAKE_CASE (e.g., MAX_POST_LENGTH, DEFAULT_AVATAR)",
+      "files": "snake_case (e.g., user_model.dart, feed_screen.dart)",
+      "folders": "snake_case (e.g., auth/, feed/, common/)"
+    },
+    "specific": {
+      "models": {
+        "pattern": "snake_case with _model suffix",
+        "example": "user_model.dart -> UserModel class"
+      },
+      "services": {
+        "pattern": "snake_case with _service suffix", 
+        "example": "auth_service.dart -> AuthService interface"
+      },
+      "viewmodels": {
+        "pattern": "snake_case with _viewmodel suffix",
+        "example": "feed_viewmodel.dart -> FeedViewModel class"
+      },
+      "screens": {
+        "pattern": "snake_case with _screen suffix",
+        "example": "login_screen.dart -> LoginScreen class"
+      },
+      "widgets": {
+        "pattern": "snake_case with descriptive name",
+        "example": "post_card.dart -> PostCard class"
+      }
+    }
+  },
+  "navigation": {
+    "type": "Bottom navigation with tab-based routing",
+    "central_file": "lib/constants/routes.dart",
+    "main_tabs": [
+      {
+        "name": "feed",
+        "icon": "Icons.home",
+        "label": "Feed", 
+        "route": "/feed",
+        "index": 0
+      },
+      {
+        "name": "search",
+        "icon": "Icons.search",
+        "label": "Search",
+        "route": "/search",
+        "index": 1
+      },
+      {
+        "name": "create",
+        "icon": "Icons.add_box",
+        "label": "Create",
+        "route": "/create",
+        "index": 2
+      },
+      {
+        "name": "notifications",
+        "icon": "Icons.favorite_border",
+        "label": "Activity",
+        "route": "/notifications",
+        "index": 3
+      },
+      {
+        "name": "profile",
+        "icon": "Icons.person",
+        "label": "Profile",
+        "route": "/profile",
+        "index": 4
+      }
+    ],
+    "routes": {
+      "structure": "Named routes with parameters",
+      "conventions": {
+        "naming": "snake_case with forward slash prefix",
+        "parameters": "Use path parameters for IDs (/user/:id)",
+        "organization": "Group by module in routes.dart"
+      },
+      "example_routes": {
+        "auth": ["/login", "/register", "/forgot-password", "/profile-setup"],
+        "feed": ["/feed", "/post/:id", "/create-post", "/stories"],
+        "profile": ["/profile", "/profile/:id", "/edit-profile", "/followers/:id"],
+        "search": ["/search", "/explore", "/trending", "/hashtag/:tag"],
+        "messages": ["/messages", "/chat/:id", "/new-message"],
+        "notifications": ["/notifications", "/notification/:id"],
+        "settings": ["/settings", "/privacy", "/account", "/help"]
+      }
+    }
+  },
+  "file_templates": {
+    "screen": {
+      "structure": [
+        "import statements (Flutter, packages, local)",
+        "class definition extending StatelessWidget",
+        "build method with ViewModel integration via Consumer",
+        "consistent widget tree structure with theme compliance"
+      ],
+      "template": "class LoginScreen extends StatelessWidget { @override Widget build(BuildContext context) { return Consumer<AuthViewModel>(builder: (context, viewModel, child) => Scaffold(...)); } }"
+    },
+    "viewmodel": {
+      "structure": [
+        "import statements",
+        "class definition extending ChangeNotifier",
+        "private variables for state",
+        "public getters for UI access",
+        "methods for business logic with notifyListeners()",
+        "dispose method for cleanup"
+      ],
+      "template": "class AuthViewModel extends ChangeNotifier { bool _isLoading = false; bool get isLoading => _isLoading; Future<void> login() { _isLoading = true; notifyListeners(); ... } @override void dispose() { super.dispose(); } }"
+    },
+    "model": {
+      "structure": [
+        "import statements",
+        "class definition with final fields",
+        "constructor with required parameters",
+        "fromJson factory method",
+        "toJson method",
+        "copyWith method",
+        "toString, operator ==, hashCode"
+      ],
+      "template": "class UserModel { final String id; final String username; const UserModel({required this.id, required this.username}); factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(...); Map<String, dynamic> toJson() => {...}; }"
+    },
+    "widget": {
+      "structure": [
+        "import statements",
+        "class definition extending StatelessWidget",
+        "final properties for configuration",
+        "constructor with required/optional parameters",
+        "build method with theme-compliant UI"
+      ],
+      "template": "class PostCard extends StatelessWidget { final Post post; final VoidCallback? onTap; const PostCard({Key? key, required this.post, this.onTap}) : super(key: key); @override Widget build(BuildContext context) => Card(...); }"
+    }
+  },
+  "code_organization": {
+    "imports": {
+      "order": [
+        "Flutter framework imports",
+        "Dart core imports", 
+        "External package imports",
+        "Local app imports (models, services, viewmodels, widgets)"
+      ],
+      "grouping": "Group related imports with blank lines between categories"
+    },
+    "class_structure": {
+      "order": [
+        "Static constants",
+        "Instance variables (private first, then public)",
+        "Constructor",
+        "Lifecycle methods (initState, dispose, etc.)",
+        "Public methods",
+        "Private methods",
+        "Build method (for widgets)"
+      ]
+    },
+    "documentation": {
+      "classes": "Brief description of purpose and usage",
+      "methods": "Document complex business logic and side effects",
+      "widgets": "Describe required/optional props and behavior"
+    }
+  },
+  "consistency_rules": {
+    "widgets": {
+      "constructors": "Always use const constructors when possible",
+      "keys": "Use Key? key parameter for all custom widgets",
+      "properties": "Mark all widget properties as final"
+    },
+    "models": {
+      "serialization": "Always implement fromJson/toJson methods",
+      "immutability": "Make all model fields final",
+      "equality": "Implement operator == and hashCode"
+    },
+    "viewmodels": {
+      "state_changes": "Always call notifyListeners() after state changes",
+      "disposal": "Override dispose() method for resource cleanup",
+      "error_handling": "Include proper error handling and loading states"
+    },
+    "screens": {
+      "viewmodel_integration": "Always integrate with corresponding ViewModel",
+      "theme_compliance": "Follow design tokens from .cursor/rules.json",
+      "accessibility": "Include proper semantic labels and navigation"
+    },
+    "naming": {
+      "descriptive": "Use clear, descriptive names",
+      "consistent": "Follow established patterns across similar components",
+      "abbreviations": "Avoid abbreviations unless widely understood"
+    }
+  },
+  "state_management": {
+    "provider": {
+      "setup": "Use Provider package for dependency injection",
+      "pattern": "ChangeNotifierProvider for ViewModels",
+      "consumption": "Consumer or context.watch for UI updates"
+    },
+    "structure": {
+      "single_responsibility": "Each ViewModel handles one feature/screen",
+      "separation": "Keep UI logic separate from business logic",
+      "testing": "ViewModels should be easily testable in isolation"
+    }
+  }
+} 

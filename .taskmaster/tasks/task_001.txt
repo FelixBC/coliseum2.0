@@ -1,0 +1,49 @@
+# Task ID: 1
+# Title: Setup Flutter Project Structure and Dependencies
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Initialize Flutter project with MVVM architecture and install required dependencies
+# Details:
+Create new Flutter project with flutter create coliseum. Setup folder structure: lib/{models,services,viewmodels,views,widgets,constants}/. Add dependencies: provider ^6.0.5, go_router ^10.1.2, shared_preferences ^2.2.0, image_picker ^1.0.2, cached_network_image ^3.2.3, flutter_map ^6.0.1, geolocator ^10.1.0, shimmer ^3.0.0. Configure pubspec.yaml with Material Design 3 and dark theme support.
+
+# Test Strategy:
+Verify project builds successfully, all dependencies resolve, and folder structure matches PRD specifications
+
+# Subtasks:
+## 1. Project Initialization [pending]
+### Dependencies: None
+### Description: Create a new Flutter project using the Flutter SDK.
+### Details:
+Use the command `flutter create project_name` to initialize a new Flutter project.
+
+## 2. Folder Structure Creation [pending]
+### Dependencies: 1.1
+### Description: Set up the basic folder structure for the project.
+### Details:
+Create folders for models, view models, views, and assets.
+
+## 3. Dependency Installation [pending]
+### Dependencies: 1.2
+### Description: Install necessary dependencies for MVVM architecture.
+### Details:
+Install packages like provider or flutter_bloc for state management.
+
+## 4. pubspec.yaml Configuration [pending]
+### Dependencies: 1.3
+### Description: Configure the pubspec.yaml file to include dependencies.
+### Details:
+Update the pubspec.yaml file to include dependencies and assets.
+
+## 5. Theme Setup [pending]
+### Dependencies: 1.4
+### Description: Configure the theme for Material Design 3 and dark theme.
+### Details:
+Set up the theme files and configure them for Material Design 3 and dark theme support.
+
+## 6. Initial Build Verification [pending]
+### Dependencies: 1.5
+### Description: Verify that the project builds successfully.
+### Details:
+Run the command `flutter run` to verify that the project builds and runs without errors.
+

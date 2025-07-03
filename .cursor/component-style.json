@@ -1,0 +1,579 @@
+{
+  "theme": {
+    "name": "Coliseum Dark Theme",
+    "inspiration": ["Instagram", "Airbnb"],
+    "description": "Modern dark theme with rounded corners and youthful typography",
+    "version": "1.0.0"
+  },
+  "colors": {
+    "primary": {
+      "main": "Color(0xFF1A1A1A)",
+      "light": "Color(0xFF2A2A2A)",
+      "dark": "Color(0xFF0F0F0F)",
+      "accent": "Color(0xFF0095F6)",
+      "accent_light": "Color(0xFF3897F0)",
+      "accent_dark": "Color(0xFF0074CC)"
+    },
+    "secondary": {
+      "main": "Color(0xFF262626)",
+      "light": "Color(0xFF363636)",
+      "dark": "Color(0xFF1F1F1F)",
+      "variant": "Color(0xFF323232)"
+    },
+    "background": {
+      "primary": "Color(0xFF000000)",
+      "secondary": "Color(0xFF121212)",
+      "tertiary": "Color(0xFF1E1E1E)",
+      "card": "Color(0xFF262626)",
+      "elevated": "Color(0xFF2C2C2C)",
+      "modal": "Color(0xFF1C1C1E)"
+    },
+    "surface": {
+      "primary": "Color(0xFF262626)",
+      "secondary": "Color(0xFF363636)",
+      "elevated": "Color(0xFF404040)",
+      "input": "Color(0xFF1E1E1E)",
+      "overlay": "Color(0x80000000)"
+    },
+    "text": {
+      "primary": "Color(0xFFFFFFFF)",
+      "secondary": "Color(0xFFB3B3B3)",
+      "tertiary": "Color(0xFF8E8E93)",
+      "disabled": "Color(0xFF6D6D70)",
+      "placeholder": "Color(0xFF666666)",
+      "inverse": "Color(0xFF000000)"
+    },
+    "accent": {
+      "blue": "Color(0xFF0095F6)",
+      "purple": "Color(0xFF8E44AD)",
+      "pink": "Color(0xFFE91E63)",
+      "orange": "Color(0xFFFF6B35)",
+      "green": "Color(0xFF4CAF50)",
+      "red": "Color(0xFFE53E3E)",
+      "yellow": "Color(0xFFFFD60A)"
+    },
+    "status": {
+      "success": "Color(0xFF4CAF50)",
+      "warning": "Color(0xFFFF9800)",
+      "error": "Color(0xFFE53E3E)",
+      "info": "Color(0xFF2196F3)",
+      "online": "Color(0xFF4CAF50)",
+      "offline": "Color(0xFF666666)"
+    },
+    "social": {
+      "like": "Color(0xFFE53E3E)",
+      "comment": "Color(0xFFFFFFFF)",
+      "share": "Color(0xFFFFFFFF)",
+      "save": "Color(0xFFFFFFFF)",
+      "story_ring": "Color(0xFF0095F6)",
+      "story_seen": "Color(0xFF666666)"
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "primary": "SF Pro Display",
+      "secondary": "SF Pro Text",
+      "monospace": "SF Mono",
+      "fallback": "Helvetica Neue"
+    },
+    "headline": {
+      "large": {
+        "fontSize": 32.0,
+        "fontWeight": "FontWeight.w700",
+        "letterSpacing": -0.5,
+        "height": 1.25,
+        "color": "Color(0xFFFFFFFF)"
+      },
+      "medium": {
+        "fontSize": 28.0,
+        "fontWeight": "FontWeight.w600",
+        "letterSpacing": -0.3,
+        "height": 1.3,
+        "color": "Color(0xFFFFFFFF)"
+      },
+      "small": {
+        "fontSize": 24.0,
+        "fontWeight": "FontWeight.w600",
+        "letterSpacing": -0.2,
+        "height": 1.3,
+        "color": "Color(0xFFFFFFFF)"
+      }
+    },
+    "title": {
+      "large": {
+        "fontSize": 22.0,
+        "fontWeight": "FontWeight.w600",
+        "letterSpacing": 0.0,
+        "height": 1.4,
+        "color": "Color(0xFFFFFFFF)"
+      },
+      "medium": {
+        "fontSize": 18.0,
+        "fontWeight": "FontWeight.w600",
+        "letterSpacing": 0.0,
+        "height": 1.4,
+        "color": "Color(0xFFFFFFFF)"
+      },
+      "small": {
+        "fontSize": 16.0,
+        "fontWeight": "FontWeight.w600",
+        "letterSpacing": 0.0,
+        "height": 1.4,
+        "color": "Color(0xFFFFFFFF)"
+      }
+    },
+    "body": {
+      "large": {
+        "fontSize": 16.0,
+        "fontWeight": "FontWeight.w400",
+        "letterSpacing": 0.0,
+        "height": 1.5,
+        "color": "Color(0xFFFFFFFF)"
+      },
+      "medium": {
+        "fontSize": 14.0,
+        "fontWeight": "FontWeight.w400",
+        "letterSpacing": 0.0,
+        "height": 1.5,
+        "color": "Color(0xFFFFFFFF)"
+      },
+      "small": {
+        "fontSize": 12.0,
+        "fontWeight": "FontWeight.w400",
+        "letterSpacing": 0.0,
+        "height": 1.5,
+        "color": "Color(0xFFB3B3B3)"
+      }
+    },
+    "label": {
+      "large": {
+        "fontSize": 14.0,
+        "fontWeight": "FontWeight.w500",
+        "letterSpacing": 0.1,
+        "height": 1.4,
+        "color": "Color(0xFFFFFFFF)"
+      },
+      "medium": {
+        "fontSize": 12.0,
+        "fontWeight": "FontWeight.w500",
+        "letterSpacing": 0.1,
+        "height": 1.4,
+        "color": "Color(0xFFB3B3B3)"
+      },
+      "small": {
+        "fontSize": 11.0,
+        "fontWeight": "FontWeight.w500",
+        "letterSpacing": 0.1,
+        "height": 1.4,
+        "color": "Color(0xFF8E8E93)"
+      }
+    },
+    "username": {
+      "fontSize": 14.0,
+      "fontWeight": "FontWeight.w600",
+      "color": "Color(0xFFFFFFFF)",
+      "letterSpacing": 0.0
+    },
+    "caption": {
+      "fontSize": 14.0,
+      "fontWeight": "FontWeight.w400",
+      "color": "Color(0xFFFFFFFF)",
+      "height": 1.4
+    },
+    "timestamp": {
+      "fontSize": 12.0,
+      "fontWeight": "FontWeight.w400",
+      "color": "Color(0xFF8E8E93)",
+      "letterSpacing": 0.0
+    }
+  },
+  "spacing": {
+    "xs": 4.0,
+    "sm": 8.0,
+    "md": 16.0,
+    "lg": 24.0,
+    "xl": 32.0,
+    "xxl": 48.0,
+    "xxxl": 64.0,
+    "post_padding": 12.0,
+    "card_margin": 8.0,
+    "section_spacing": 20.0
+  },
+  "borderRadius": {
+    "xs": "BorderRadius.circular(4.0)",
+    "sm": "BorderRadius.circular(8.0)",
+    "md": "BorderRadius.circular(12.0)",
+    "lg": "BorderRadius.circular(16.0)",
+    "xl": "BorderRadius.circular(20.0)",
+    "xxl": "BorderRadius.circular(24.0)",
+    "full": "BorderRadius.circular(50.0)",
+    "story": "BorderRadius.circular(18.0)",
+    "button": "BorderRadius.circular(8.0)",
+    "input": "BorderRadius.circular(12.0)"
+  },
+  "shadows": {
+    "xs": [
+      "BoxShadow(color: Color(0x0D000000), offset: Offset(0, 1), blurRadius: 2, spreadRadius: 0)"
+    ],
+    "sm": [
+      "BoxShadow(color: Color(0x1A000000), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)"
+    ],
+    "md": [
+      "BoxShadow(color: Color(0x1A000000), offset: Offset(0, 4), blurRadius: 8, spreadRadius: 0)"
+    ],
+    "lg": [
+      "BoxShadow(color: Color(0x1A000000), offset: Offset(0, 8), blurRadius: 16, spreadRadius: 0)"
+    ],
+    "xl": [
+      "BoxShadow(color: Color(0x26000000), offset: Offset(0, 16), blurRadius: 32, spreadRadius: 0)"
+    ],
+    "modal": [
+      "BoxShadow(color: Color(0x40000000), offset: Offset(0, 8), blurRadius: 24, spreadRadius: 0)"
+    ]
+  },
+  "components": {
+    "buttons": {
+      "primary": {
+        "backgroundColor": "Color(0xFF0095F6)",
+        "foregroundColor": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)",
+        "borderRadius": "BorderRadius.circular(8.0)",
+        "fontSize": 16.0,
+        "fontWeight": "FontWeight.w600",
+        "elevation": 0.0,
+        "border": "Border.all(color: Colors.transparent)",
+        "disabled": {
+          "backgroundColor": "Color(0xFF363636)",
+          "foregroundColor": "Color(0xFF6D6D70)"
+        },
+        "pressed": {
+          "backgroundColor": "Color(0xFF0074CC)"
+        }
+      },
+      "secondary": {
+        "backgroundColor": "Color(0xFF262626)",
+        "foregroundColor": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)",
+        "borderRadius": "BorderRadius.circular(8.0)",
+        "fontSize": 16.0,
+        "fontWeight": "FontWeight.w600",
+        "border": "Border.all(color: Color(0xFF404040), width: 1.0)",
+        "elevation": 0.0
+      },
+      "text": {
+        "backgroundColor": "Colors.transparent",
+        "foregroundColor": "Color(0xFF0095F6)",
+        "padding": "EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)",
+        "fontSize": 16.0,
+        "fontWeight": "FontWeight.w600",
+        "border": "Border.all(color: Colors.transparent)"
+      },
+      "icon": {
+        "backgroundColor": "Color(0xFF262626)",
+        "foregroundColor": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.all(12.0)",
+        "borderRadius": "BorderRadius.circular(8.0)",
+        "size": 24.0,
+        "elevation": 0.0
+      },
+      "follow": {
+        "backgroundColor": "Color(0xFF0095F6)",
+        "foregroundColor": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0)",
+        "borderRadius": "BorderRadius.circular(6.0)",
+        "fontSize": 14.0,
+        "fontWeight": "FontWeight.w600"
+      },
+      "message": {
+        "backgroundColor": "Color(0xFF262626)",
+        "foregroundColor": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0)",
+        "borderRadius": "BorderRadius.circular(6.0)",
+        "fontSize": 14.0,
+        "fontWeight": "FontWeight.w600",
+        "border": "Border.all(color: Color(0xFF404040), width: 1.0)"
+      }
+    },
+    "cards": {
+      "post": {
+        "backgroundColor": "Color(0xFF000000)",
+        "borderRadius": "BorderRadius.circular(0.0)",
+        "padding": "EdgeInsets.zero",
+        "margin": "EdgeInsets.zero",
+        "elevation": 0.0,
+        "border": "Border.all(color: Colors.transparent)"
+      },
+      "story": {
+        "backgroundColor": "Color(0xFF262626)",
+        "borderRadius": "BorderRadius.circular(18.0)",
+        "padding": "EdgeInsets.all(4.0)",
+        "margin": "EdgeInsets.symmetric(horizontal: 4.0)",
+        "elevation": 0.0,
+        "size": 72.0
+      },
+      "profile": {
+        "backgroundColor": "Color(0xFF262626)",
+        "borderRadius": "BorderRadius.circular(12.0)",
+        "padding": "EdgeInsets.all(16.0)",
+        "margin": "EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)",
+        "elevation": 0.0,
+        "border": "Border.all(color: Color(0xFF363636), width: 1.0)"
+      },
+      "elevated": {
+        "backgroundColor": "Color(0xFF363636)",
+        "borderRadius": "BorderRadius.circular(12.0)",
+        "padding": "EdgeInsets.all(16.0)",
+        "margin": "EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)",
+        "elevation": 2.0,
+        "shadow": "BoxShadow(color: Color(0x1A000000), offset: Offset(0, 4), blurRadius: 8)"
+      }
+    },
+    "inputs": {
+      "textField": {
+        "backgroundColor": "Color(0xFF1E1E1E)",
+        "borderColor": "Color(0xFF404040)",
+        "focusedBorderColor": "Color(0xFF0095F6)",
+        "errorBorderColor": "Color(0xFFE53E3E)",
+        "borderRadius": "BorderRadius.circular(12.0)",
+        "padding": "EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0)",
+        "fontSize": 16.0,
+        "fontWeight": "FontWeight.w400",
+        "textColor": "Color(0xFFFFFFFF)",
+        "placeholderColor": "Color(0xFF666666)",
+        "borderWidth": 1.0,
+        "height": 48.0
+      },
+      "searchField": {
+        "backgroundColor": "Color(0xFF1E1E1E)",
+        "borderColor": "Color(0xFF404040)",
+        "borderRadius": "BorderRadius.circular(24.0)",
+        "padding": "EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0)",
+        "fontSize": 16.0,
+        "fontWeight": "FontWeight.w400",
+        "textColor": "Color(0xFFFFFFFF)",
+        "placeholderColor": "Color(0xFF666666)",
+        "height": 44.0
+      },
+      "comment": {
+        "backgroundColor": "Color(0xFF1E1E1E)",
+        "borderColor": "Color(0xFF404040)",
+        "borderRadius": "BorderRadius.circular(20.0)",
+        "padding": "EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0)",
+        "fontSize": 14.0,
+        "fontWeight": "FontWeight.w400",
+        "textColor": "Color(0xFFFFFFFF)",
+        "placeholderColor": "Color(0xFF666666)",
+        "minHeight": 36.0
+      }
+    },
+    "navigation": {
+      "bottomNavBar": {
+        "backgroundColor": "Color(0xFF000000)",
+        "selectedItemColor": "Color(0xFF0095F6)",
+        "unselectedItemColor": "Color(0xFF8E8E93)",
+        "elevation": 0.0,
+        "height": 80.0,
+        "iconSize": 24.0,
+        "selectedIconSize": 26.0,
+        "border": "Border(top: BorderSide(color: Color(0xFF262626), width: 0.5))",
+        "labelStyle": {
+          "fontSize": 10.0,
+          "fontWeight": "FontWeight.w500"
+        }
+      },
+      "appBar": {
+        "backgroundColor": "Color(0xFF000000)",
+        "foregroundColor": "Color(0xFFFFFFFF)",
+        "elevation": 0.0,
+        "height": 44.0,
+        "titleTextStyle": {
+          "fontSize": 18.0,
+          "fontWeight": "FontWeight.w600",
+          "color": "Color(0xFFFFFFFF)"
+        },
+        "iconTheme": {
+          "color": "Color(0xFFFFFFFF)",
+          "size": 24.0
+        }
+      },
+      "tabBar": {
+        "backgroundColor": "Color(0xFF000000)",
+        "indicatorColor": "Color(0xFF0095F6)",
+        "labelColor": "Color(0xFFFFFFFF)",
+        "unselectedLabelColor": "Color(0xFF8E8E93)",
+        "labelStyle": {
+          "fontSize": 16.0,
+          "fontWeight": "FontWeight.w600"
+        }
+      }
+    },
+    "avatars": {
+      "small": {
+        "size": 32.0,
+        "borderRadius": "BorderRadius.circular(16.0)",
+        "border": "Border.all(color: Color(0xFF404040), width: 1.0)"
+      },
+      "medium": {
+        "size": 48.0,
+        "borderRadius": "BorderRadius.circular(24.0)",
+        "border": "Border.all(color: Color(0xFF404040), width: 1.0)"
+      },
+      "large": {
+        "size": 80.0,
+        "borderRadius": "BorderRadius.circular(40.0)",
+        "border": "Border.all(color: Color(0xFF404040), width: 1.0)"
+      },
+      "xlarge": {
+        "size": 120.0,
+        "borderRadius": "BorderRadius.circular(60.0)",
+        "border": "Border.all(color: Color(0xFF404040), width: 2.0)"
+      },
+      "story": {
+        "size": 64.0,
+        "borderRadius": "BorderRadius.circular(32.0)",
+        "border": "Border.all(color: Color(0xFF0095F6), width: 2.0)"
+      },
+      "story_seen": {
+        "size": 64.0,
+        "borderRadius": "BorderRadius.circular(32.0)",
+        "border": "Border.all(color: Color(0xFF666666), width: 2.0)"
+      }
+    },
+    "dividers": {
+      "primary": {
+        "color": "Color(0xFF262626)",
+        "height": 1.0,
+        "thickness": 1.0,
+        "margin": "EdgeInsets.symmetric(horizontal: 0.0)"
+      },
+      "secondary": {
+        "color": "Color(0xFF1A1A1A)",
+        "height": 1.0,
+        "thickness": 1.0,
+        "margin": "EdgeInsets.symmetric(horizontal: 16.0)"
+      },
+      "section": {
+        "color": "Color(0xFF262626)",
+        "height": 8.0,
+        "thickness": 8.0,
+        "margin": "EdgeInsets.symmetric(horizontal: 0.0)"
+      }
+    },
+    "chips": {
+      "primary": {
+        "backgroundColor": "Color(0xFF262626)",
+        "foregroundColor": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0)",
+        "borderRadius": "BorderRadius.circular(16.0)",
+        "fontSize": 14.0,
+        "fontWeight": "FontWeight.w500",
+        "border": "Border.all(color: Color(0xFF404040), width: 1.0)"
+      },
+      "selected": {
+        "backgroundColor": "Color(0xFF0095F6)",
+        "foregroundColor": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0)",
+        "borderRadius": "BorderRadius.circular(16.0)",
+        "fontSize": 14.0,
+        "fontWeight": "FontWeight.w600",
+        "border": "Border.all(color: Color(0xFF0095F6), width: 1.0)"
+      },
+      "hashtag": {
+        "backgroundColor": "Colors.transparent",
+        "foregroundColor": "Color(0xFF0095F6)",
+        "padding": "EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0)",
+        "fontSize": 14.0,
+        "fontWeight": "FontWeight.w400"
+      }
+    },
+    "interactions": {
+      "like_button": {
+        "size": 24.0,
+        "activeColor": "Color(0xFFE53E3E)",
+        "inactiveColor": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.all(8.0)"
+      },
+      "comment_button": {
+        "size": 24.0,
+        "color": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.all(8.0)"
+      },
+      "share_button": {
+        "size": 24.0,
+        "color": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.all(8.0)"
+      },
+      "save_button": {
+        "size": 24.0,
+        "activeColor": "Color(0xFFFFFFFF)",
+        "inactiveColor": "Color(0xFFFFFFFF)",
+        "padding": "EdgeInsets.all(8.0)"
+      }
+    },
+    "badges": {
+      "notification": {
+        "backgroundColor": "Color(0xFFE53E3E)",
+        "textColor": "Color(0xFFFFFFFF)",
+        "borderRadius": "BorderRadius.circular(10.0)",
+        "minSize": 20.0,
+        "padding": "EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0)",
+        "fontSize": 12.0,
+        "fontWeight": "FontWeight.w600"
+      },
+      "online": {
+        "backgroundColor": "Color(0xFF4CAF50)",
+        "size": 12.0,
+        "borderRadius": "BorderRadius.circular(6.0)",
+        "border": "Border.all(color: Color(0xFF000000), width: 2.0)"
+      }
+    }
+  },
+  "animations": {
+    "duration": {
+      "fast": "Duration(milliseconds: 150)",
+      "normal": "Duration(milliseconds: 300)",
+      "slow": "Duration(milliseconds: 500)",
+      "like": "Duration(milliseconds: 200)",
+      "page_transition": "Duration(milliseconds: 250)"
+    },
+    "curves": {
+      "easeIn": "Curves.easeIn",
+      "easeOut": "Curves.easeOut", 
+      "easeInOut": "Curves.easeInOut",
+      "bounce": "Curves.bounceOut",
+      "spring": "Curves.elasticOut"
+    }
+  },
+  "responsive": {
+    "breakpoints": {
+      "mobile": 600.0,
+      "tablet": 900.0,
+      "desktop": 1200.0
+    },
+    "padding": {
+      "mobile": "EdgeInsets.all(16.0)",
+      "tablet": "EdgeInsets.all(24.0)",
+      "desktop": "EdgeInsets.all(32.0)"
+    },
+    "max_content_width": 600.0
+  },
+  "layout": {
+    "post": {
+      "header_height": 60.0,
+      "image_aspect_ratio": 1.0,
+      "actions_height": 52.0,
+      "padding": "EdgeInsets.symmetric(horizontal: 12.0)"
+    },
+    "story": {
+      "height": 100.0,
+      "width": 72.0,
+      "spacing": 8.0
+    },
+    "profile": {
+      "header_height": 200.0,
+      "stats_height": 80.0,
+      "bio_max_lines": 3,
+      "grid_spacing": 2.0
+    }
+  }
+} 

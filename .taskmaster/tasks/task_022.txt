@@ -1,0 +1,11 @@
+# Task ID: 22
+# Title: Build Location Picker
+# Status: pending
+# Dependencies: 20
+# Priority: medium
+# Description: Create map-based location selection
+# Details:
+Create lib/views/post/location_picker_screen.dart with interactive map using flutter_map. Implement location search and current location detection. Add recent locations list. Include address geocoding and reverse geocoding. Use OpenStreetMap tiles.
+
+# Test Strategy:
+Test map interactions, verify location detection, test search functionality

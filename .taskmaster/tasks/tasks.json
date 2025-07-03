@@ -1,0 +1,651 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 31,
+        "title": "Setup Project Repository and Development Environment",
+        "description": "Initialize the mobile app project with proper folder structure, dependencies, and development tools",
+        "details": "Create React Native or Flutter project with proper folder structure (components, screens, services, utils). Setup package.json with required dependencies including navigation, state management (Redux/MobX), UI components library, and development tools (ESLint, Prettier). Configure development environment with proper build scripts and debugging tools.",
+        "testStrategy": "Verify project builds successfully on both iOS and Android platforms. Test hot reload functionality and ensure all development tools are working correctly.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 32,
+        "title": "Implement Core Navigation Structure",
+        "description": "Setup main navigation flow with tab navigation and stack navigation for all major app sections",
+        "details": "Implement React Navigation or Flutter navigation with bottom tab navigator for main sections (Home, Explore, Messages, Profile). Setup stack navigators for each tab with proper screen transitions. Include modal navigation for booking flow and property details. Configure deep linking support for property URLs.",
+        "testStrategy": "Test navigation between all major screens. Verify back button behavior, tab switching, and modal presentations work correctly on both platforms.",
+        "priority": "high",
+        "dependencies": [
+          31
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Setup React Navigation Dependencies and Basic Configuration",
+            "description": "Install and configure React Navigation v6 with required dependencies for tab and stack navigation",
+            "dependencies": [],
+            "details": "Install @react-navigation/native, @react-navigation/bottom-tabs, @react-navigation/native-stack, and platform-specific dependencies (react-native-screens, react-native-safe-area-context). Setup NavigationContainer as root component and configure initial navigation theme and options.",
+            "status": "done",
+            "testStrategy": "Verify navigation container renders without errors and basic navigation structure is accessible"
+          },
+          {
+            "id": 2,
+            "title": "Create Bottom Tab Navigator with Main Sections",
+            "description": "Implement bottom tab navigator with Home, Explore, Messages, and Profile tabs including icons and styling",
+            "dependencies": [
+              1
+            ],
+            "details": "Create BottomTabNavigator component with four main tabs. Configure tab bar icons using react-native-vector-icons or similar. Setup tab bar styling with proper colors, active/inactive states, and accessibility labels. Create placeholder screens for each tab section.",
+            "status": "done",
+            "testStrategy": "Test tab switching functionality, verify icons display correctly, and ensure tab bar styling matches design requirements"
+          },
+          {
+            "id": 3,
+            "title": "Setup Stack Navigators for Each Tab Section",
+            "description": "Create individual stack navigators for Home, Explore, Messages, and Profile sections with proper screen transitions",
+            "dependencies": [
+              2
+            ],
+            "details": "Create separate stack navigator components (HomeStack, ExploreStack, MessagesStack, ProfileStack). Configure screen options for headers, transitions, and gestures. Setup initial screens for each stack and define navigation flow between screens within each section.",
+            "status": "done",
+            "testStrategy": "Test navigation within each stack, verify screen transitions work smoothly, and ensure proper header configuration"
+          },
+          {
+            "id": 4,
+            "title": "Implement Modal Navigation for Booking and Property Details",
+            "description": "Setup modal presentation for booking flow and property details screens with proper navigation patterns",
+            "dependencies": [
+              3
+            ],
+            "details": "Create modal stack navigator for booking flow and property details. Configure modal presentation style with proper animations and gestures. Setup navigation methods to present modals from any tab and handle modal dismissal. Implement proper state management for modal navigation.",
+            "status": "done",
+            "testStrategy": "Test modal presentation from different tabs, verify modal dismissal works correctly, and ensure proper navigation state handling"
+          },
+          {
+            "id": 5,
+            "title": "Configure Deep Linking Support for Property URLs",
+            "description": "Implement deep linking configuration to handle property URLs and navigate to appropriate screens",
+            "dependencies": [
+              4
+            ],
+            "details": "Setup linking configuration in NavigationContainer with URL patterns for property details. Configure path matching for property IDs and handle navigation to property screens from external links. Implement proper error handling for invalid links and setup URL scheme registration.",
+            "status": "done",
+            "testStrategy": "Test deep links from external sources, verify proper navigation to property screens, and ensure graceful handling of invalid URLs"
+          }
+        ]
+      },
+      {
+        "id": 33,
+        "title": "Design and Implement UI Component Library",
+        "description": "Create reusable UI components following design system principles",
+        "details": "Build component library with buttons, input fields, cards, modals, loading states, and typography components. Implement theme support for light/dark mode using styled-components or similar. Create consistent spacing, colors, and typography scales. Include accessibility features (screen reader support, proper contrast ratios).",
+        "testStrategy": "Test all components in isolation with different props and states. Verify theme switching works correctly. Test accessibility features with screen readers.",
+        "priority": "high",
+        "dependencies": [
+          31
+        ],
+        "status": "deferred",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Establish Design System Foundation and Theme Architecture",
+            "description": "Create the foundational design system tokens including color palettes, typography scales, spacing units, and theme structure to support light/dark mode switching",
+            "dependencies": [],
+            "details": "Define design tokens in a centralized configuration (colors, typography, spacing, breakpoints). Set up theme provider architecture using styled-components ThemeProvider or similar. Create color palettes with proper contrast ratios for accessibility (WCAG AA compliance). Establish typography scale with font families, sizes, weights, and line heights. Define spacing scale using consistent units (4px, 8px, 16px, etc.).",
+            "status": "done",
+            "testStrategy": "Create visual regression tests for theme switching and validate color contrast ratios using automated accessibility testing tools"
+          },
+          {
+            "id": 2,
+            "title": "Implement Core Interactive Components",
+            "description": "Build fundamental interactive UI components including buttons, input fields, and form elements with proper styling and accessibility features",
+            "dependencies": [
+              1
+            ],
+            "details": "Create Button component with variants (primary, secondary, outline, ghost) and sizes (small, medium, large). Implement Input component with types (text, email, password, number) and states (default, focused, error, disabled). Add proper ARIA labels, focus management, and keyboard navigation. Include loading states and disabled states. Ensure components consume theme tokens for consistent styling.",
+            "status": "deferred",
+            "testStrategy": "Unit tests for component props and states, accessibility testing with screen readers, keyboard navigation testing, and visual regression tests"
+          },
+          {
+            "id": 3,
+            "title": "Build Layout and Container Components",
+            "description": "Create structural components including cards, containers, and layout utilities that provide consistent spacing and visual hierarchy",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement Card component with variants (elevated, outlined, flat) and customizable padding/margins. Create Container components for consistent max-widths and centering. Build Grid and Flex layout utilities. Add proper semantic HTML structure and ensure responsive behavior. Include hover and focus states where appropriate.",
+            "status": "pending",
+            "testStrategy": "Responsive design testing across different screen sizes, visual regression tests, and semantic HTML validation"
+          },
+          {
+            "id": 4,
+            "title": "Develop Modal and Overlay Components",
+            "description": "Create modal dialogs and overlay components with proper focus management, accessibility features, and animation support",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Build Modal component with backdrop, close functionality, and size variants. Implement proper focus trapping and restoration. Add escape key handling and click-outside-to-close behavior. Include ARIA attributes for screen reader support (role='dialog', aria-labelledby, aria-describedby). Create overlay/backdrop component with smooth animations. Ensure body scroll locking when modal is open.",
+            "status": "pending",
+            "testStrategy": "Focus management testing, keyboard navigation testing, screen reader compatibility testing, and animation performance testing"
+          },
+          {
+            "id": 5,
+            "title": "Implement Loading States and Typography Components",
+            "description": "Create loading indicators, skeleton screens, and typography components to complete the component library with proper accessibility and performance considerations",
+            "dependencies": [
+              1,
+              3
+            ],
+            "details": "Build Spinner and ProgressBar components with customizable sizes and colors. Create Skeleton component for loading states that matches content structure. Implement Typography components (Heading, Text, Caption) with semantic HTML and proper heading hierarchy. Add loading states to interactive components. Include proper ARIA live regions for loading announcements. Ensure all components support theme switching and maintain accessibility standards.",
+            "status": "pending",
+            "testStrategy": "Performance testing for animations, accessibility testing for loading announcements, visual regression testing for skeleton states, and semantic HTML validation for typography hierarchy"
+          }
+        ]
+      },
+      {
+        "id": 34,
+        "title": "Setup Authentication Service and State Management",
+        "description": "Implement authentication service with support for email, SSO, and phone number registration",
+        "details": "Setup Firebase Auth or similar service supporting email/password, Google SSO, Facebook SSO, and phone number authentication. Implement secure token storage using Keychain (iOS) and Keystore (Android). Create authentication state management with Redux/MobX including login, logout, and token refresh logic.",
+        "testStrategy": "Test all authentication methods on both platforms. Verify token persistence across app restarts. Test logout functionality and token expiration handling.",
+        "priority": "high",
+        "dependencies": [
+          31
+        ],
+        "status": "deferred",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configure Authentication Service",
+            "description": "Set up Firebase Auth or equivalent service with support for email/password, Google SSO, Facebook SSO, and phone number authentication.",
+            "dependencies": [],
+            "details": "Initialize Firebase Auth in the project, enable required providers (email, Google, Facebook, phone), and configure project settings in Firebase Console or equivalent platform[1][3][5].",
+            "status": "done",
+            "testStrategy": "Verify each provider is enabled and test basic registration and login flows."
+          },
+          {
+            "id": 2,
+            "title": "Implement Secure Token Storage",
+            "description": "Integrate secure storage for authentication tokens using Keychain (iOS) and Keystore (Android).",
+            "dependencies": [
+              1
+            ],
+            "details": "Write platform-specific code to securely store and retrieve authentication tokens after successful login.",
+            "status": "pending",
+            "testStrategy": "Test token storage and retrieval on both iOS and Android devices."
+          },
+          {
+            "id": 3,
+            "title": "Develop Authentication State Management",
+            "description": "Create authentication state management using Redux or MobX.",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement Redux/MobX store to manage user authentication state, including login, logout, and token refresh logic.",
+            "status": "pending",
+            "testStrategy": "Test state changes during login, logout, and token refresh."
+          },
+          {
+            "id": 4,
+            "title": "Integrate Authentication Logic",
+            "description": "Connect authentication service to state management and secure storage.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Ensure authentication events (login, logout, token refresh) update state and securely store tokens.",
+            "status": "pending",
+            "testStrategy": "Test end-to-end authentication flow including state updates and token storage."
+          },
+          {
+            "id": 5,
+            "title": "Test and Validate Authentication Flow",
+            "description": "Perform comprehensive testing of the authentication service and state management.",
+            "dependencies": [
+              4
+            ],
+            "details": "Test all authentication methods (email, SSO, phone), secure token storage, and state management logic.",
+            "status": "pending",
+            "testStrategy": "Execute test cases for each authentication method and verify secure token handling and state consistency."
+          }
+        ]
+      },
+      {
+        "id": 35,
+        "title": "Create Onboarding Screen Flow",
+        "description": "Build welcoming tutorial screens showcasing app's value proposition",
+        "details": "Create 3-4 onboarding screens with illustrations, animations, and compelling copy explaining Coliseum's benefits. Implement swipe gestures, progress indicators, and skip functionality. Store onboarding completion status in AsyncStorage to show only on first app launch.",
+        "testStrategy": "Test swipe gestures and navigation between onboarding screens. Verify skip functionality and that onboarding doesn't show on subsequent app launches.",
+        "priority": "medium",
+        "dependencies": [
+          32,
+          33
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 36,
+        "title": "Implement Registration Screen",
+        "description": "Create user account creation form with email, SSO, and phone number options",
+        "details": "Build registration form with email/password fields, social media login buttons, and phone number input with country code picker. Implement form validation, error handling, and loading states. Include terms of service and privacy policy checkboxes with proper linking.",
+        "testStrategy": "Test form validation with various input combinations. Verify all registration methods work correctly and proper error messages are displayed for invalid inputs.",
+        "priority": "high",
+        "dependencies": [
+          33,
+          34
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 37,
+        "title": "Implement Login Screen",
+        "description": "Create login interface with email/password and SSO options",
+        "details": "Build login form with email/password inputs, remember me checkbox, forgot password link, and social login buttons. Implement biometric authentication (Face ID/Touch ID/Fingerprint) for returning users. Add proper form validation and error handling.",
+        "testStrategy": "Test login with valid and invalid credentials. Verify biometric authentication works correctly. Test forgot password functionality and social login options.",
+        "priority": "high",
+        "dependencies": [
+          33,
+          34
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 38,
+        "title": "Setup Backend API Service Layer",
+        "description": "Create service layer for API communication with proper error handling and caching",
+        "details": "Implement API service using Axios or Fetch with interceptors for authentication headers, request/response logging, and error handling. Setup base URLs for different environments. Implement caching strategy using React Query or SWR for property data. Include retry logic and offline handling.",
+        "testStrategy": "Test API calls with various network conditions. Verify authentication headers are properly attached. Test caching behavior and offline functionality.",
+        "priority": "high",
+        "dependencies": [
+          31,
+          34
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 39,
+        "title": "Create Home Feed Screen",
+        "description": "Build social-style feed displaying latest properties and personalized recommendations",
+        "details": "Implement infinite scroll feed with property cards showing images, titles, prices, and ratings. Add pull-to-refresh functionality and loading states. Implement personalization algorithm based on user preferences and booking history. Include quick action buttons for favorites and sharing.",
+        "testStrategy": "Test infinite scroll performance with large datasets. Verify pull-to-refresh works correctly. Test personalization by creating different user profiles with various preferences.",
+        "priority": "high",
+        "dependencies": [
+          32,
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 40,
+        "title": "Implement Explore Screen with Grid View",
+        "description": "Create grid view of featured properties tailored to user interests",
+        "details": "Build responsive grid layout with property cards optimized for different screen sizes. Implement category filters (trending, luxury, budget-friendly, etc.) and sorting options. Add smooth animations for grid item interactions and loading states.",
+        "testStrategy": "Test grid layout on various screen sizes and orientations. Verify category filtering and sorting functionality. Test performance with large numbers of properties.",
+        "priority": "medium",
+        "dependencies": [
+          32,
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Property Card Component",
+            "description": "Design and implement a reusable property card component that displays property information in a grid-friendly format",
+            "dependencies": [],
+            "details": "Create a PropertyCard component with image, title, price, location, and key features. Implement responsive design that adapts to different screen sizes (mobile, tablet, desktop). Include hover states and touch interactions. Use proper image optimization and lazy loading for property photos.",
+            "status": "pending",
+            "testStrategy": "Unit tests for component rendering, responsive behavior testing across different viewport sizes, and interaction testing for hover/touch states"
+          },
+          {
+            "id": 2,
+            "title": "Build Responsive Grid Layout System",
+            "description": "Implement a flexible grid layout that adapts to different screen sizes and displays property cards optimally",
+            "dependencies": [
+              1
+            ],
+            "details": "Create a responsive grid using CSS Grid or Flexbox that shows 1 column on mobile, 2-3 on tablet, and 3-4 on desktop. Implement proper spacing, alignment, and ensure consistent card heights. Add support for different grid densities based on user preferences.",
+            "status": "pending",
+            "testStrategy": "Visual regression testing across different screen sizes, grid layout consistency tests, and performance testing for large datasets"
+          },
+          {
+            "id": 3,
+            "title": "Implement Category Filters and Sorting",
+            "description": "Add filtering and sorting functionality with categories like trending, luxury, budget-friendly, and various sorting options",
+            "dependencies": [],
+            "details": "Create filter components for categories (trending, luxury, budget-friendly, new listings, etc.) and sorting options (price, date, popularity, distance). Implement filter state management and API integration for filtered results. Add clear filter indicators and reset functionality.",
+            "status": "pending",
+            "testStrategy": "Integration tests for filter API calls, state management testing for filter combinations, and user interaction testing for filter UI components"
+          },
+          {
+            "id": 4,
+            "title": "Add Loading States and Animations",
+            "description": "Implement smooth animations for grid interactions, loading states, and transitions between different views",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Add skeleton loading states for initial page load and filter changes. Implement smooth animations for card hover effects, filter transitions, and grid layout changes. Create staggered animations for grid items appearing. Add pull-to-refresh functionality for mobile.",
+            "status": "pending",
+            "testStrategy": "Animation performance testing, loading state verification across different network conditions, and accessibility testing for motion preferences"
+          },
+          {
+            "id": 5,
+            "title": "Integrate Explore Screen with Navigation and Data",
+            "description": "Connect the explore screen to the app's navigation system and implement data fetching for featured properties",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "details": "Integrate with navigation system and implement API calls for fetching featured properties based on user interests. Add error handling, retry mechanisms, and offline support. Implement infinite scrolling or pagination for large datasets. Connect filters to backend API endpoints.",
+            "status": "pending",
+            "testStrategy": "End-to-end testing for complete user flows, API integration testing with mock and real data, error handling verification, and performance testing for data loading"
+          }
+        ]
+      },
+      {
+        "id": 41,
+        "title": "Create Map View with Geolocation",
+        "description": "Build map interface showing properties with location-based features",
+        "details": "Integrate Google Maps or MapBox with custom property markers. Implement user location detection with proper permissions handling. Add clustering for dense areas, custom info windows, and smooth map animations. Include search within map bounds functionality.",
+        "testStrategy": "Test map functionality on both platforms with location permissions granted and denied. Verify marker clustering and info window interactions. Test search within visible map area.",
+        "priority": "medium",
+        "dependencies": [
+          32,
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 42,
+        "title": "Build Search and Filter System",
+        "description": "Create comprehensive search with filters for price, type, dates, rules, and amenities",
+        "details": "Implement search bar with autocomplete, advanced filter panel with price range sliders, property type checkboxes, date pickers, guest count selectors, and amenity filters. Add filter persistence and quick filter chips. Include search history and saved searches functionality.",
+        "testStrategy": "Test search with various keyword combinations. Verify all filter types work correctly and can be combined. Test filter persistence across app sessions.",
+        "priority": "high",
+        "dependencies": [
+          32,
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 43,
+        "title": "Implement Search Results Display",
+        "description": "Create list and grid views for displaying filtered property results",
+        "details": "Build toggle between list and grid views with smooth transitions. Implement sorting options (price, rating, distance, newest). Add result count display, loading states, and empty state handling. Include quick preview functionality for property cards.",
+        "testStrategy": "Test view switching between list and grid modes. Verify sorting functionality and result count accuracy. Test performance with large result sets.",
+        "priority": "medium",
+        "dependencies": [
+          33,
+          42
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 44,
+        "title": "Create Property Detail Screen",
+        "description": "Build comprehensive property view with all details, photos, and booking options",
+        "details": "Implement scrollable detail screen with image carousel, property title, description, amenities list, house rules, location map, host information, and pricing details. Add floating booking button, share functionality, and favorite toggle. Include review section with ratings breakdown.",
+        "testStrategy": "Test scrolling performance and image loading. Verify all property information displays correctly. Test booking button functionality and share options.",
+        "priority": "high",
+        "dependencies": [
+          32,
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 45,
+        "title": "Build Media Gallery with 360° Support",
+        "description": "Create full-screen photo and video gallery with 360° viewing capability",
+        "details": "Implement full-screen image carousel with pinch-to-zoom, swipe navigation, and smooth transitions. Add support for 360° photos/videos using libraries like react-native-panorama-view. Include thumbnail navigation and image counter display.",
+        "testStrategy": "Test image loading and zoom functionality. Verify 360° content displays correctly with proper controls. Test performance with high-resolution images.",
+        "priority": "medium",
+        "dependencies": [
+          33
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 46,
+        "title": "Implement Favorites System",
+        "description": "Create functionality to save properties into user-curated collections",
+        "details": "Build favorites management with ability to create custom collections, add/remove properties, and organize saved items. Implement heart animation for favorite toggle, collection sharing, and sync across devices. Add favorites screen with grid/list view options.",
+        "testStrategy": "Test favorite toggle functionality across different screens. Verify collection creation and management. Test synchronization across multiple devices.",
+        "priority": "medium",
+        "dependencies": [
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 47,
+        "title": "Create Availability Calendar",
+        "description": "Build calendar interface for date selection with availability display",
+        "details": "Implement interactive calendar with available/unavailable date highlighting, range selection for check-in/check-out, minimum stay requirements, and pricing per night display. Add month navigation, today button, and clear selection functionality.",
+        "testStrategy": "Test date range selection with various scenarios. Verify availability data accuracy and pricing display. Test calendar navigation and selection clearing.",
+        "priority": "high",
+        "dependencies": [
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 48,
+        "title": "Build Date and Guest Selection Interface",
+        "description": "Create UI for choosing dates and number of guests with validation",
+        "details": "Implement date picker integration with calendar, guest counter with adults/children/infants categories, and validation for maximum occupancy. Add guest type explanations and property-specific restrictions display.",
+        "testStrategy": "Test date selection integration with calendar. Verify guest count validation against property limits. Test various guest combinations and restrictions.",
+        "priority": "high",
+        "dependencies": [
+          33,
+          47
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 49,
+        "title": "Create Booking Summary Screen",
+        "description": "Build detailed cost breakdown with rates, taxes, and total calculation",
+        "details": "Implement itemized cost breakdown showing nightly rate, cleaning fees, service fees, taxes, and total amount. Add promotional code input, cancellation policy display, and booking terms. Include dynamic pricing updates based on dates and guest count.",
+        "testStrategy": "Test cost calculations with various date ranges and guest counts. Verify promotional code functionality. Test dynamic pricing updates.",
+        "priority": "high",
+        "dependencies": [
+          33,
+          48
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 50,
+        "title": "Implement Secure Payment System",
+        "description": "Create payment form supporting multiple payment methods with security",
+        "details": "Integrate Stripe or similar payment processor with credit card form, PayPal integration, and Apple/Google Pay support. Implement PCI compliance, card validation, saved payment methods, and secure tokenization. Add payment confirmation and receipt generation.",
+        "testStrategy": "Test all payment methods with valid and invalid card details. Verify security compliance and token handling. Test payment confirmation flow.",
+        "priority": "high",
+        "dependencies": [
+          33,
+          49
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 51,
+        "title": "Build Booking Confirmation System",
+        "description": "Create confirmation screen with reservation details and sharing options",
+        "details": "Implement confirmation screen with reservation code, booking details summary, QR code generation, and sharing functionality. Add calendar integration, email confirmation sending, and quick actions for contacting host or viewing property.",
+        "testStrategy": "Test confirmation screen display with various booking types. Verify sharing functionality and calendar integration. Test email confirmation delivery.",
+        "priority": "high",
+        "dependencies": [
+          33,
+          50
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 52,
+        "title": "Create Booking History Management",
+        "description": "Build interface for viewing past, upcoming, and canceled reservations",
+        "details": "Implement tabbed interface for different booking statuses, detailed booking cards with key information, cancellation functionality, and rebooking options. Add search and filter capabilities for booking history and export functionality.",
+        "testStrategy": "Test booking history display with various booking statuses. Verify cancellation functionality and rebooking options. Test search and filtering capabilities.",
+        "priority": "medium",
+        "dependencies": [
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 53,
+        "title": "Implement Real-time Messaging System",
+        "description": "Create chat interface with real-time messaging and media sharing",
+        "details": "Implement WebSocket-based real-time chat with text messages, photo sharing, location sharing, and quick reply templates. Add message status indicators, typing indicators, and push notifications for new messages. Include message search and conversation archiving.",
+        "testStrategy": "Test real-time message delivery between users. Verify media sharing functionality and message status updates. Test push notifications and offline message handling.",
+        "priority": "high",
+        "dependencies": [
+          32,
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 54,
+        "title": "Build Messages Inbox",
+        "description": "Create central inbox for all conversations with hosts and guests",
+        "details": "Implement conversation list with last message preview, unread message indicators, conversation search, and swipe actions for archiving/deleting. Add conversation filtering by booking status and quick access to booking details from conversations.",
+        "testStrategy": "Test conversation list updates with new messages. Verify search functionality and swipe actions. Test integration with booking details.",
+        "priority": "medium",
+        "dependencies": [
+          33,
+          53
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 55,
+        "title": "Create User Profile System",
+        "description": "Build public user profiles with stats, bio, and social features",
+        "details": "Implement user profile display with avatar, bio, verification badges, booking statistics, review ratings, and social links. Add profile sharing, follow/unfollow functionality, and privacy settings for profile visibility.",
+        "testStrategy": "Test profile display with various user data combinations. Verify privacy settings and social functionality. Test profile sharing capabilities.",
+        "priority": "medium",
+        "dependencies": [
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 56,
+        "title": "Build Profile Editing Interface",
+        "description": "Create comprehensive profile editing with photo, bio, and preferences",
+        "details": "Implement profile editing form with image picker for avatar, bio text editor, language selection, social media links, and notification preferences. Add form validation, image cropping, and changes confirmation dialog.",
+        "testStrategy": "Test profile editing with various input combinations. Verify image upload and cropping functionality. Test form validation and save confirmation.",
+        "priority": "medium",
+        "dependencies": [
+          33,
+          55
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 57,
+        "title": "Implement Reviews and Ratings System",
+        "description": "Create system for adding and displaying reviews for guests and hosts",
+        "details": "Build review submission form with star ratings for different categories, text review input, and photo attachments. Implement review display with filtering, sorting, and helpful votes. Add review moderation and reporting functionality.",
+        "testStrategy": "Test review submission with various rating combinations. Verify review display and filtering options. Test moderation and reporting features.",
+        "priority": "medium",
+        "dependencies": [
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 58,
+        "title": "Create Property Listing Wizard",
+        "description": "Build step-by-step wizard for hosts to create new property listings",
+        "details": "Implement multi-step wizard with property type selection, location input with map, photo upload with reordering, amenities selection, house rules, pricing setup, and availability calendar. Add progress indicator and draft saving functionality.",
+        "testStrategy": "Test wizard navigation and form validation at each step. Verify photo upload and reordering. Test draft saving and restoration functionality.",
+        "priority": "medium",
+        "dependencies": [
+          32,
+          33,
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 59,
+        "title": "Build Property Management Interface",
+        "description": "Create comprehensive property editing and management tools for hosts",
+        "details": "Implement property dashboard with booking calendar, pricing management, availability settings, property details editing, and performance analytics. Add bulk operations for multiple properties and integration with external calendar systems.",
+        "testStrategy": "Test property editing functionality and calendar management. Verify analytics display and bulk operations. Test external calendar synchronization.",
+        "priority": "medium",
+        "dependencies": [
+          33,
+          58
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 60,
+        "title": "Implement Push Notifications and Activity Center",
+        "description": "Create notification system for messages, bookings, and app activities",
+        "details": "Setup push notification service with Firebase Cloud Messaging or similar. Implement notification categories (messages, bookings, promotions), notification scheduling, and in-app activity center. Add notification preferences and opt-out functionality.",
+        "testStrategy": "Test push notifications on both platforms with various notification types. Verify notification preferences and activity center functionality. Test notification handling when app is closed.",
+        "priority": "medium",
+        "dependencies": [
+          31,
+          33
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-06-30T17:09:19.771Z",
+      "updated": "2025-06-30T22:38:33.208Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

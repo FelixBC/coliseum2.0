@@ -1,0 +1,57 @@
+# Coliseum App - Product Requirements Document (PRD)
+
+## 1. Core User Experience
+
+### 1.1. Onboarding & Authentication
+- **Onboarding Screen:** A brief, welcoming tutorial showcasing Coliseum's value proposition.
+- **Registration Screen:** User account creation form supporting email, social media (SSO), and phone number.
+- **Login Screen:** Login with email/password or SSO options.
+
+### 1.2. Discovery & Exploration
+- **Home Feed:** A social-style feed displaying the latest listed properties and personalized recommendations.
+- **Explore Screen:** A grid view of featured properties tailored to the user's interests.
+- **Map View:** A map-based interface showing geolocalized properties nearby.
+- **Search & Filters:** A comprehensive side panel with filters for price range, property type, dates, house rules, and amenities.
+- **Search Results:** A list or grid display of properties matching the applied filters.
+
+### 1.3. Property Details
+- **Property Detail Screen:** A complete view with title, photo gallery, detailed description, host information, pricing, and user ratings.
+- **Media Gallery:** A full-screen carousel for photos and 360° videos.
+- **Favorites (Saved):** A feature to save properties into user-curated collections.
+
+## 2. Booking & Reservation Flow
+
+### 2.1. Booking Process
+- **Availability Calendar:** A calendar view to select available dates and block occupied ones.
+- **Date & Guest Selection:** UI for choosing check-in/check-out dates and the number of guests.
+- **Booking Summary:** A breakdown of rates, taxes, and the total cost.
+- **Payment Screen:** A secure form for payment methods, including credit card, PayPal, and Apple/Google Pay.
+
+### 2.2. Post-Booking
+- **Booking Confirmation:** A screen displaying the reservation code with options to share.
+- **Successful Booking Screen:** Detailed view of the confirmed reservation with quick access to chat with the host and cancellation options.
+- **Booking History:** A list of past, upcoming, and canceled trips.
+
+## 3. Communication & Community
+
+### 3.1. Messaging
+- **Messages (Inbox):** A central inbox for all conversations with hosts and guests.
+- **Chat Interface:** A real-time chat with support for text, photos, location sharing, and quick replies.
+
+### 3.2. Profiles & Reviews
+- **User Profile:** Public profile with avatar, bio, and stats (bookings, ratings, followers).
+- **Edit Profile:** A screen to change profile picture, bio, spoken languages, and social links.
+- **Host Profile:** A public page showcasing all properties and reviews for a specific host.
+- **Ratings & Reviews:** A system to add and read reviews for both guests and hosts.
+
+## 4. Hosting & Property Management
+
+- **Create New Property:** A step-by-step wizard to list a new property (title, location, photos, etc.).
+- **Property Editor:** A comprehensive form to manage all property details, including amenities, house rules, description, and pricing.
+
+## 5. App-wide Features & Settings
+
+- **Notifications:** Push notifications and an in-app Activity Center for messages, booking updates, likes, and comments.
+- **General Settings:** Screens for account management, privacy, language, and theme (light/dark mode).
+- **Payments & Methods:** A section to manage saved credit cards, view account balance, and see transaction history.
+- **Help Center:** An FAQ, a system for reporting issues, and access to live support. 

@@ -1,0 +1,11 @@
+# Task ID: 15
+# Title: Implement Stories Feature
+# Status: pending
+# Dependencies: 13
+# Priority: medium
+# Description: Create stories viewer and horizontal list
+# Details:
+Create lib/views/feed/stories_viewer_screen.dart with fullscreen story display. Implement progress indicators, tap to advance, hold to pause. Create horizontal stories list for home feed. Add story creation placeholder. Use PageView for story navigation.
+
+# Test Strategy:
+Test story navigation, verify progress indicators, test tap/hold interactions
