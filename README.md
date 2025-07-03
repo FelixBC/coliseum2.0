@@ -111,4 +111,4 @@ For questions, suggestions, or support, open an issue on GitHub or contact the p
 
 ---
 
-**Happy coding!** 🎉
+**Happy coding!** 🎉 
