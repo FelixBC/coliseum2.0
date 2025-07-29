@@ -15,19 +15,12 @@ import 'package:coliseum/views/home/home_page.dart';
 import 'package:coliseum/views/messages/messages_page.dart';
 import 'package:coliseum/views/messages/chat_page.dart';
 import 'package:coliseum/views/profile/profile_page.dart';
+import 'package:coliseum/views/profile/edit_profile_page.dart';
 import 'package:coliseum/views/saved/saved_page.dart';
 import 'package:coliseum/views/settings/settings_page.dart';
-import 'package:coliseum/widgets/navigation/main_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-// Private navigators
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
-final _shellNavigatorExploreKey = GlobalKey<NavigatorState>(debugLabel: 'shellExplore');
-final _shellNavigatorMessagesKey = GlobalKey<NavigatorState>(debugLabel: 'shellMessages');
-final _shellNavigatorProfileKey = GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
 
 class AppRouter {
   final AuthViewModel authViewModel;
@@ -37,7 +30,6 @@ class AppRouter {
   late final GoRouter router = GoRouter(
     refreshListenable: authViewModel,
     initialLocation: AppRoutes.home,
-    navigatorKey: _rootNavigatorKey,
     redirect: (BuildContext context, GoRouterState state) {
       final bool onAuthRoute = state.matchedLocation == AppRoutes.auth || state.matchedLocation == '/auth/register';
 
@@ -54,81 +46,52 @@ class AppRouter {
       return null;
     },
     routes: <RouteBase>[
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return MainScaffold(child: navigationShell);
-        },
-        branches: [
-          // Home Branch
-          StatefulShellBranch(
-            navigatorKey: _shellNavigatorHomeKey,
-            routes: [
-              GoRoute(
-                path: AppRoutes.home,
-                builder: (context, state) => const HomePage(),
-              ),
-            ],
-          ),
-          // Explore Branch
-          StatefulShellBranch(
-            navigatorKey: _shellNavigatorExploreKey,
-            routes: [
-              GoRoute(
-                path: AppRoutes.explore,
-                builder: (context, state) => const ExplorePage(),
-              ),
-            ],
-          ),
-          // Messages Branch
-          StatefulShellBranch(
-            navigatorKey: _shellNavigatorMessagesKey,
-            routes: [
-              GoRoute(
-                path: AppRoutes.messages,
-                builder: (context, state) => const MessagesPage(),
-              ),
-            ],
-          ),
-          // Profile Branch
-          StatefulShellBranch(
-            navigatorKey: _shellNavigatorProfileKey,
-            routes: [
-              GoRoute(
-                path: AppRoutes.myProfile,
-                builder: (context, state) => const ProfilePage(),
-              ),
-            ],
-          ),
-        ],
-      ),
+      // Auth routes
       GoRoute(
         path: AppRoutes.auth,
-        builder: (BuildContext context, GoRouterState state) {
-          return const LoginPage();
-        },
-        routes: [
-          GoRoute(
-            path: 'register', // Corresponds to /auth/register
-            builder: (BuildContext context, GoRouterState state) {
-              return const RegisterPage();
-            },
-          )
-        ]),
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        builder: (context, state) => const RegisterPage(),
+      ),
+      
+      // Main app routes
+      GoRoute(
+        path: AppRoutes.home,
+        builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.explore,
+        builder: (context, state) => const ExplorePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.messages,
+        builder: (context, state) => const MessagesPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.myProfile,
+        builder: (context, state) => const ProfilePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.saved,
+        builder: (context, state) => const SavedPage(),
+      ),
+      
+      // Other routes
       GoRoute(
         path: AppRoutes.comments,
-        builder: (BuildContext context, GoRouterState state) {
+        builder: (context, state) {
           final post = state.extra as Post;
           return CommentsPage(post: post);
         },
       ),
       GoRoute(
         path: AppRoutes.createPost,
-        parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const CreatePostPage(),
       ),
       GoRoute(
         path: AppRoutes.propertyDetail,
-        parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) {
           final post = state.extra as Post;
           return PropertyDetailPage(post: post);
@@ -136,7 +99,6 @@ class AppRouter {
         routes: [
           GoRoute(
             path: AppRoutes.bookingCalendar,
-            parentNavigatorKey: _rootNavigatorKey,
             builder: (context, state) {
               final post = state.extra as Post;
               return BookingCalendarPage(propertyId: post.id);
@@ -146,24 +108,18 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.settings,
-        parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const SettingsPage(),
       ),
       GoRoute(
-        path: AppRoutes.saved,
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => const SavedPage(),
+        path: AppRoutes.editProfile,
+        builder: (context, state) => const EditProfilePage(),
       ),
       GoRoute(
         path: AppRoutes.chat,
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) {
-          return ChatPage();
-        },
+        builder: (context, state) => ChatPage(),
       ),
       GoRoute(
         path: AppRoutes.newMessage,
-        parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => Scaffold(
           backgroundColor: const Color(0xFF000000),
           appBar: AppBar(

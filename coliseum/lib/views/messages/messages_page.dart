@@ -1,7 +1,9 @@
+import 'package:coliseum/constants/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:go_router/go_router.dart';
 import 'package:coliseum/widgets/common/search_bar.dart';
+import 'package:coliseum/widgets/navigation/bottom_navigation_bar.dart';
 
 class MessagesPage extends StatefulWidget {
   const MessagesPage({super.key});
@@ -80,15 +82,17 @@ class _MessagesPageState extends State<MessagesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF000000),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF000000),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0.5,
-        title: const Text(
+        title: Text(
           'Mensajes',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.dark 
+                ? Colors.white 
+                : Colors.black,
             fontSize: 22,
             fontFamily: 'SF Pro Display',
           ),
@@ -220,6 +224,13 @@ class _MessagesPageState extends State<MessagesPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push(AppRoutes.createPost),
+        child: const Icon(Icons.add),
+        elevation: 0,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const AppBottomNavigationBar(currentIndex: 2),
     );
   }
 } 

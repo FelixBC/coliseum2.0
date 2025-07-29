@@ -24,17 +24,30 @@ class StoryAvatar extends StatelessWidget {
             padding: const EdgeInsets.all(3),
             child: CircleAvatar(
               radius: 30,
-              backgroundColor: Colors.grey[900],
+              backgroundColor: Theme.of(context).brightness == Brightness.dark 
+                  ? Colors.grey[900] 
+                  : Colors.grey[300],
               backgroundImage: story.imageUrl.startsWith('assets/')
                   ? AssetImage(story.imageUrl) as ImageProvider
                   : NetworkImage(story.imageUrl),
-              onBackgroundImageError: (_, __) => const Icon(Icons.person, color: Colors.white),
+              onBackgroundImageError: (_, __) => Icon(
+                Icons.person, 
+                color: Theme.of(context).brightness == Brightness.dark 
+                    ? Colors.white 
+                    : Colors.black,
+              ),
             ),
           ),
           const SizedBox(height: 6),
           Text(
             story.user.username,
-            style: const TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontSize: 13, 
+              color: Theme.of(context).brightness == Brightness.dark 
+                  ? Colors.white 
+                  : Colors.black, 
+              fontWeight: FontWeight.w500
+            ),
             overflow: TextOverflow.ellipsis,
           ),
         ],

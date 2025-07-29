@@ -1,6 +1,9 @@
+import 'package:coliseum/constants/routes.dart';
 import 'package:coliseum/widgets/common/search_bar.dart';
+import 'package:coliseum/widgets/navigation/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ExplorePage extends StatelessWidget {
@@ -26,9 +29,9 @@ class ExplorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF000000),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF000000),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0.5,
         title: CustomSearchBar(
           onSearch: (query) {
@@ -38,7 +41,12 @@ class ExplorePage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.tune, color: Colors.white),
+            icon: Icon(
+              Icons.tune, 
+              color: Theme.of(context).brightness == Brightness.dark 
+                  ? Colors.white 
+                  : Colors.black
+            ),
             onPressed: () {
               // TODO: Implement filter action
             },
@@ -108,6 +116,13 @@ class ExplorePage extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push(AppRoutes.createPost),
+        child: const Icon(Icons.add),
+        elevation: 0,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const AppBottomNavigationBar(currentIndex: 1),
     );
   }
 } 
