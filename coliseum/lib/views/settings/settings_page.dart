@@ -36,6 +36,8 @@ class SettingsPage extends StatelessWidget {
               const SizedBox(height: 24),
               _buildSettingsSection(context, localizationService),
               const SizedBox(height: 24),
+              _buildSecuritySection(context, authViewModel, localizationService),
+              const SizedBox(height: 24),
               _buildAccountSection(context, authViewModel, localizationService),
             ],
           );
@@ -147,6 +149,46 @@ class SettingsPage extends StatelessWidget {
             title: localizationService.get('privacy'),
             subtitle: localizationService.get('public'),
             onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSecuritySection(BuildContext context, AuthViewModel authViewModel, LocalizationService localizationService) {
+    return Card(
+      color: Theme.of(context).colorScheme.surface,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              localizationService.get('security'),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          FutureBuilder<bool>(
+            future: authViewModel.isBiometricEnabled(),
+            builder: (context, snapshot) {
+              final isEnabled = snapshot.data ?? false;
+              return _buildSettingTile(
+                context,
+                icon: Icons.fingerprint,
+                title: localizationService.get('biometricAuthentication'),
+                subtitle: isEnabled ? localizationService.get('enabled') : localizationService.get('disabled'),
+                onTap: () => authViewModel.toggleBiometricAuthentication(),
+                trailing: Switch(
+                  value: isEnabled,
+                  onChanged: (value) => authViewModel.toggleBiometricAuthentication(),
+                  activeColor: Theme.of(context).primaryColor,
+                ),
+              );
+            },
           ),
         ],
       ),

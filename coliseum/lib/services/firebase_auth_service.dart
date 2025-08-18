@@ -1,19 +1,57 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:coliseum/models/user_model.dart';
 
 class FirebaseAuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  // Check if Firebase is available
+  Future<bool> isAvailable() async {
+    try {
+      // Check if Firebase is initialized
+      await _auth.authStateChanges().first;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   // Get current user
-  User? get currentUser => _auth.currentUser;
+  firebase_auth.User? get currentUser => _auth.currentUser;
+
+  // Get current user as our User model
+  Future<User?> getCurrentUser() async {
+    try {
+      final firebaseUser = _auth.currentUser;
+      if (firebaseUser == null) return null;
+
+      // Convert Firebase User to our User model
+      return User(
+        id: firebaseUser.uid,
+        username: firebaseUser.displayName ?? firebaseUser.email?.split('@').first ?? 'user',
+        email: firebaseUser.email ?? '',
+        profileImageUrl: firebaseUser.photoURL ?? 'https://i.pravatar.cc/150?u=${firebaseUser.uid}',
+        bio: '',
+        firstName: firebaseUser.displayName?.split(' ').first,
+        lastName: (firebaseUser.displayName?.split(' ').length ?? 0) > 1 
+            ? firebaseUser.displayName?.split(' ').skip(1).join(' ') 
+            : null,
+        authProvider: 'firebase',
+        createdAt: DateTime.now(),
+        lastLoginAt: DateTime.now(),
+      );
+    } catch (e) {
+      print('Error getting current Firebase user: $e');
+      return null;
+    }
+  }
 
   // Stream of auth changes
-  Stream<User?> get authStateChanges => _auth.authStateChanges();
+  Stream<firebase_auth.User?> get authStateChanges => _auth.authStateChanges();
 
   // Email/Password Sign Up
-  Future<UserCredential> signUpWithEmailAndPassword(String email, String password) async {
+  Future<firebase_auth.UserCredential> signUpWithEmailAndPassword(String email, String password) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -26,7 +64,7 @@ class FirebaseAuthService {
   }
 
   // Email/Password Sign In
-  Future<UserCredential> signInWithEmailAndPassword(String email, String password) async {
+  Future<firebase_auth.UserCredential> signInWithEmailAndPassword(String email, String password) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -38,8 +76,67 @@ class FirebaseAuthService {
     }
   }
 
+  // Sign in with email and return our User model
+  Future<User?> signInWithEmail(String email, String password) async {
+    try {
+      final credential = await signInWithEmailAndPassword(email, password);
+      final firebaseUser = credential.user;
+      if (firebaseUser == null) return null;
+
+      // Convert Firebase User to our User model
+      return User(
+        id: firebaseUser.uid,
+        username: firebaseUser.displayName ?? firebaseUser.email?.split('@').first ?? 'user',
+        email: firebaseUser.email ?? '',
+        profileImageUrl: firebaseUser.photoURL ?? 'https://i.pravatar.cc/150?u=${firebaseUser.uid}',
+        bio: '',
+        firstName: firebaseUser.displayName?.split(' ').first,
+        lastName: (firebaseUser.displayName?.split(' ').length ?? 0) > 1 
+            ? firebaseUser.displayName?.split(' ').skip(1).join(' ') 
+            : null,
+        authProvider: 'firebase',
+        createdAt: DateTime.now(),
+        lastLoginAt: DateTime.now(),
+      );
+    } catch (e) {
+      print('Error signing in with email: $e');
+      return null;
+    }
+  }
+
+  // Sign up with email and return our User model
+  Future<User?> signUpWithEmail(String email, String password, String username) async {
+    try {
+      final credential = await signUpWithEmailAndPassword(email, password);
+      final firebaseUser = credential.user;
+      if (firebaseUser == null) return null;
+
+      // Update display name
+      await firebaseUser.updateDisplayName(username);
+
+      // Convert Firebase User to our User model
+      return User(
+        id: firebaseUser.uid,
+        username: username,
+        email: firebaseUser.email ?? '',
+        profileImageUrl: firebaseUser.photoURL ?? 'https://i.pravatar.cc/150?u=${firebaseUser.uid}',
+        bio: '',
+        firstName: username.split(' ').first,
+        lastName: username.split(' ').length > 1 
+            ? username.split(' ').skip(1).join(' ') 
+            : null,
+        authProvider: 'firebase',
+        createdAt: DateTime.now(),
+        lastLoginAt: DateTime.now(),
+      );
+    } catch (e) {
+      print('Error signing up with email: $e');
+      return null;
+    }
+  }
+
   // Google Sign In
-  Future<UserCredential> signInWithGoogle() async {
+  Future<firebase_auth.UserCredential> signInWithGoogle() async {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -101,10 +198,10 @@ class FirebaseAuthService {
   }
 
   // Convert Firebase User to our User Model
-  UserModel? convertFirebaseUser(User? firebaseUser) {
+  User? convertFirebaseUser(firebase_auth.User? firebaseUser) {
     if (firebaseUser == null) return null;
 
-    return UserModel(
+    return User(
       id: firebaseUser.uid,
       username: firebaseUser.displayName ?? 'Usuario',
       email: firebaseUser.email ?? '',
@@ -124,7 +221,7 @@ class FirebaseAuthService {
   }
 
   // Get auth provider string
-  String _getAuthProvider(List<UserInfo> providerData) {
+  String _getAuthProvider(List<firebase_auth.UserInfo> providerData) {
     if (providerData.isEmpty) return 'email';
     
     final provider = providerData.first.providerId;
@@ -142,7 +239,7 @@ class FirebaseAuthService {
 
   // Handle Firebase Auth errors
   String _handleAuthError(dynamic error) {
-    if (error is FirebaseAuthException) {
+    if (error is firebase_auth.FirebaseAuthException) {
       switch (error.code) {
         case 'user-not-found':
           return 'No se encontró una cuenta con este email.';

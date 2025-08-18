@@ -1,21 +1,105 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:coliseum/models/user_model.dart';
 import 'package:coliseum/services/auth_service.dart';
+import 'package:coliseum/services/storage_service.dart';
+import 'package:coliseum/services/session_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProductionAuthService implements AuthService {
+class ProductionAuthService extends ChangeNotifier implements AuthService {
   static const String _userKey = 'current_user';
   static const String _tokenKey = 'auth_token';
   
   User? _currentUser;
   String? _authToken;
+  String? _errorMessage;
+  AuthStatus _status = AuthStatus.unauthenticated;
+  final SessionService _sessionService = SessionService();
   
   String? get authToken => _authToken;
   bool get isAuthenticated => _currentUser != null && _authToken != null;
   
   @override
-  Future<User?> get currentUser async => _currentUser;
+  User? get currentUser => _currentUser;
+  
+  @override
+  String? get errorMessage => _errorMessage;
+  
+  @override
+  bool get isLoading => _status == AuthStatus.loading;
+  
+  @override
+  bool get isSessionValid => _sessionService.isSessionValid;
+  
+  @override
+  bool get isSessionExpiringSoon => _sessionService.isSessionExpiringSoon;
+  
+  @override
+  Duration? get remainingSessionTime => _sessionService.remainingSessionTime;
+  
+  @override
+  AuthStatus get status => _status;
+  
+  @override
+  bool get isProfileComplete => _currentUser?.hasCompleteProfile ?? false;
+  
+  @override
+  double get profileCompletionPercentage => _currentUser?.profileCompletionPercentage ?? 0.0;
+
+  ProductionAuthService() {
+    _initializeAuth();
+  }
+
+  @override
+  void dispose() {
+    _sessionService.removeListener(_onSessionChanged);
+    super.dispose();
+  }
+
+  void _onSessionChanged() {
+    _currentUser = _sessionService.currentUser;
+    _status = _sessionService.isSessionValid 
+        ? AuthStatus.authenticated 
+        : AuthStatus.unauthenticated;
+    notifyListeners();
+  }
+
+  Future<void> _initializeAuth() async {
+    try {
+      _setStatus(AuthStatus.loading);
+      
+      // Initialize storage service
+      await StorageService.initialize();
+      
+      // Listen to session changes
+      _sessionService.addListener(_onSessionChanged);
+      
+      // Check if user is already authenticated locally
+      await _loadStoredUser();
+      
+      if (_currentUser != null && _authToken != null) {
+        // Create session with stored user
+        await _sessionService.createSession(_currentUser!);
+        _setStatus(AuthStatus.authenticated);
+      } else {
+        _setStatus(AuthStatus.unauthenticated);
+      }
+    } catch (e) {
+      _errorMessage = 'Error initializing auth: $e';
+      _setStatus(AuthStatus.error);
+    }
+  }
+
+  void _setStatus(AuthStatus status) {
+    _status = status;
+    notifyListeners();
+  }
+
+  void _setError(String error) {
+    _errorMessage = error;
+    _setStatus(AuthStatus.error);
+  }
 
   // Initialize service
   Future<void> initialize() async {
@@ -110,7 +194,153 @@ class ProductionAuthService implements AuthService {
     );
   }
 
-  // Email/Password Sign Up
+  // Store user data locally
+  Future<void> _storeUserData(User user) async {
+    try {
+      await StorageService.saveUser(user);
+      await StorageService.saveAuthToken(_authToken ?? '');
+    } catch (e) {
+      print('Error storing user data: $e');
+    }
+  }
+
+  // Clear local user data
+  Future<void> _clearUserData() async {
+    try {
+      await StorageService.deleteUser();
+      await StorageService.deleteAuthToken();
+    } catch (e) {
+      print('Error clearing user data: $e');
+    }
+  }
+
+  @override
+  Future<User?> signInWithEmail(String email, String password) async {
+    try {
+      _setStatus(AuthStatus.loading);
+      
+      // Use existing login method
+      final user = await login(email, password);
+      
+      // Store user data locally and create session
+      await _storeUserData(user);
+      await _sessionService.createSession(user);
+      
+      _setStatus(AuthStatus.authenticated);
+      return user;
+    } catch (e) {
+      _setError('Error signing in: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<User?> signUpWithEmail(String email, String password, String username) async {
+    try {
+      _setStatus(AuthStatus.loading);
+      
+      // Use existing signUp method
+      final user = await signUp(username, email, password);
+      
+      // Store user data locally and create session
+      await _storeUserData(user);
+      await _sessionService.createSession(user);
+      
+      _setStatus(AuthStatus.authenticated);
+      return user;
+    } catch (e) {
+      _setError('Error signing up: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<User?> signInWithGoogle() async {
+    try {
+      _setStatus(AuthStatus.loading);
+      
+      // Use existing Google sign in method
+      final user = await _googleSignIn();
+      
+      // Store user data locally and create session
+      await _storeUserData(user);
+      await _sessionService.createSession(user);
+      
+      _setStatus(AuthStatus.authenticated);
+      return user;
+    } catch (e) {
+      _setError('Error signing in with Google: $e');
+      return null;
+    }
+  }
+
+  // Google Sign In (renamed to avoid conflict)
+  Future<User> _googleSignIn() async {
+    // Simulate API delay
+    await Future.delayed(const Duration(seconds: 1));
+    
+    // Always create Felix's profile for Google login
+    final user = User(
+      id: 'google_felix_blanco',
+      username: 'felix.blanco',
+      email: 'felixaurio17@gmail.com',
+      profileImageUrl: 'assets/images/profiles/elalfa.jpg', // TODO: Replace with your actual photo
+      bio: 'Desarrollador Flutter y entusiasta de la tecnología inmobiliaria | @felix.blanco',
+      postCount: 1, // Only 1 property as requested
+      followers: 127,
+      following: 89,
+      firstName: 'Felix',
+      lastName: 'Blanco Cabrera',
+      phoneNumber: '+1 809-555-0123',
+      dateOfBirth: DateTime(1995, 6, 15), // Example date
+      authProvider: 'google',
+      createdAt: DateTime.now().subtract(const Duration(days: 180)), // 6 months ago
+      lastLoginAt: DateTime.now(),
+    );
+    
+    final token = _generateToken();
+    _currentUser = user;
+    _authToken = token;
+    await _saveUser(user, token);
+    
+    return user;
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      _setStatus(AuthStatus.loading);
+      
+      // Clear session and local user data
+      await _sessionService.logout();
+      _currentUser = null;
+      _authToken = null;
+      await _clearUserData();
+      
+      _setStatus(AuthStatus.unauthenticated);
+    } catch (e) {
+      _setError('Error signing out: $e');
+    }
+  }
+
+  @override
+  Future<void> updateProfile(User updatedUser) async {
+    try {
+      if (_currentUser == null) {
+        throw Exception('Usuario no autenticado');
+      }
+      
+      // Update user data
+      _currentUser = updatedUser;
+      await _storeUserData(updatedUser);
+      await _sessionService.extendSession();
+      notifyListeners();
+    } catch (e) {
+      _setError('Error updating profile: $e');
+    }
+  }
+
+  // Email/Password Sign Up (renamed to avoid conflict)
   Future<User> signUp(String username, String email, String password) async {
     // Simulate API delay
     await Future.delayed(const Duration(seconds: 1));
@@ -158,7 +388,7 @@ class ProductionAuthService implements AuthService {
     return user;
   }
 
-  // Email/Password Sign In
+  // Email/Password Sign In (renamed to avoid conflict)
   Future<User> login(String email, String password) async {
     // Simulate API delay
     await Future.delayed(const Duration(seconds: 1));
@@ -230,41 +460,7 @@ class ProductionAuthService implements AuthService {
     return user;
   }
 
-  // Google Sign In
-  Future<User> signInWithGoogle() async {
-    // Simulate API delay
-    await Future.delayed(const Duration(seconds: 1));
-    
-    // Always create Felix's profile for Google login
-    final user = User(
-      id: 'google_felix_blanco',
-      username: 'felix.blanco',
-      email: 'felixaurio17@gmail.com',
-      profileImageUrl: 'assets/images/profiles/elalfa.jpg', // TODO: Replace with your actual photo
-      bio: 'Desarrollador Flutter y entusiasta de la tecnología inmobiliaria | @felix.blanco',
-      postCount: 1, // Only 1 property as requested
-      followers: 127,
-      following: 89,
-      firstName: 'Felix',
-      lastName: 'Blanco Cabrera',
-      phoneNumber: '+1 809-555-0123',
-      dateOfBirth: DateTime(1995, 6, 15), // Example date
-      authProvider: 'google',
-      createdAt: DateTime.now().subtract(const Duration(days: 180)), // 6 months ago
-      lastLoginAt: DateTime.now(),
-    );
-    
-    final token = _generateToken();
-    _currentUser = user;
-    _authToken = token;
-    await _saveUser(user, token);
-    
-    return user;
-  }
-  
-
-
-  // Sign Out
+  // Sign Out (renamed to avoid conflict)
   Future<void> logout() async {
     // Simulate API delay
     await Future.delayed(const Duration(seconds: 1));
@@ -307,8 +503,8 @@ class ProductionAuthService implements AuthService {
     print('Password updated successfully for user: ${_currentUser!.email}');
   }
 
-  // Update Profile
-  Future<void> updateProfile({
+  // Update Profile (renamed to avoid conflict)
+  Future<void> updateProfileOld({
     String? displayName,
     String? photoURL,
     String? firstName,
@@ -343,4 +539,85 @@ class ProductionAuthService implements AuthService {
 
   // Check if user is authenticated
   bool get isLoggedIn => _currentUser != null && _authToken != null;
+
+  // Session management methods
+  @override
+  Future<void> extendSession() async {
+    await _sessionService.extendSession();
+  }
+
+  @override
+  Future<void> refreshSession() async {
+    await _sessionService.forceRefresh();
+  }
+
+  @override
+  void updateActivity() {
+    _sessionService.updateActivity();
+  }
+
+  @override
+  bool validateSession() {
+    return _sessionService.validateSession();
+  }
+
+  // Check if user has valid local data
+  @override
+  Future<bool> hasValidLocalData() async {
+    try {
+      return await StorageService.hasValidUserData();
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Refresh user data from local storage
+  @override
+  Future<void> refreshFromLocalStorage() async {
+    try {
+      final user = await StorageService.getUser();
+      if (user != null) {
+        _currentUser = user;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error refreshing from local storage: $e');
+    }
+  }
+
+  // Get authentication provider
+  @override
+  Future<String?> getAuthProvider() async {
+    try {
+      return await StorageService.getAuthProvider();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Get last login time
+  @override
+  Future<DateTime?> getLastLogin() async {
+    try {
+      return await StorageService.getLastLogin();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Get storage statistics
+  @override
+  Future<Map<String, dynamic>> getStorageStats() async {
+    try {
+      return await StorageService.getStorageStats();
+    } catch (e) {
+      return {'error': e.toString()};
+    }
+  }
+
+  // Get session information
+  @override
+  Map<String, dynamic> getSessionInfo() {
+    return _sessionService.getSessionInfo();
+  }
 } 

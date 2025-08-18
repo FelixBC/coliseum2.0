@@ -17,8 +17,9 @@ class ProfileInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Display name (preferred over username)
           Text(
-            user.username,
+            user.displayName,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -27,16 +28,136 @@ class ProfileInfo extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
+          // Username with @ symbol
           Text(
-            user.bio ?? '',
+            '@${user.username}',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontSize: 15,
+              fontSize: 16,
               fontFamily: 'SF Pro Text',
             ),
           ),
+          const SizedBox(height: 8),
+          // Bio
+          if (user.bio.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user.bio,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 15,
+                    fontFamily: 'SF Pro Text',
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          // Additional profile information
+          _buildProfileDetails(context, localizationService),
           const SizedBox(height: 16),
+          // Action buttons
           _buildActionButtons(context, localizationService),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileDetails(BuildContext context, LocalizationService localizationService) {
+    final details = <Widget>[];
+    
+    // Email (if available and different from username)
+    if (user.email.isNotEmpty && user.email != user.username) {
+      details.add(_buildDetailRow(
+        context,
+        Icons.email_outlined,
+        user.email,
+        Theme.of(context).colorScheme.onSurfaceVariant,
+      ));
+    }
+    
+    // Location
+    if (user.location != null && user.location!.isNotEmpty) {
+      details.add(_buildDetailRow(
+        context,
+        Icons.location_on_outlined,
+        user.location!,
+        Theme.of(context).colorScheme.onSurfaceVariant,
+      ));
+    }
+    
+    // Website
+    if (user.website != null && user.website!.isNotEmpty) {
+      details.add(_buildDetailRow(
+        context,
+        Icons.link,
+        user.website!,
+        Theme.of(context).colorScheme.primary,
+      ));
+    }
+    
+    // Auth provider info
+    if (user.authProvider == 'google') {
+      details.add(_buildDetailRow(
+        context,
+        Icons.verified,
+        'Verified with Google',
+        Colors.blue,
+      ));
+    }
+    
+    // Member since
+    if (user.createdAt != null) {
+      final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      final date = user.createdAt!;
+      final month = months[date.month - 1];
+      final year = date.year;
+      
+      details.add(_buildDetailRow(
+        context,
+        Icons.calendar_today_outlined,
+        'Member since $month $year',
+        Theme.of(context).colorScheme.onSurfaceVariant,
+      ));
+    }
+    
+    if (details.isEmpty) return const SizedBox.shrink();
+    
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        children: details.map((detail) => detail).toList(),
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(BuildContext context, IconData icon, String text, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 16,
+            color: color,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 14,
+                color: color,
+                fontFamily: 'SF Pro Text',
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -46,8 +167,19 @@ class ProfileInfo extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: ElevatedButton(
-            onPressed: () {},
+          child: ElevatedButton.icon(
+            onPressed: () {
+              // Navigate to edit profile
+            },
+            icon: Icon(
+              Icons.edit_outlined,
+              color: Theme.of(context).colorScheme.onPrimary,
+              size: 18,
+            ),
+            label: Text(
+              localizationService.get('editProfile'), 
+              style: const TextStyle(fontWeight: FontWeight.bold)
+            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -57,16 +189,23 @@ class ProfileInfo extends StatelessWidget {
               elevation: 2,
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
-            child: Text(
-              localizationService.get('editProfile'), 
-              style: const TextStyle(fontWeight: FontWeight.bold)
-            ),
           ),
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: OutlinedButton(
-            onPressed: () {},
+          child: OutlinedButton.icon(
+            onPressed: () {
+              // Share profile
+            },
+            icon: Icon(
+              Icons.share_outlined,
+              color: Theme.of(context).primaryColor,
+              size: 18,
+            ),
+            label: Text(
+              localizationService.get('share'), 
+              style: const TextStyle(fontWeight: FontWeight.bold)
+            ),
             style: OutlinedButton.styleFrom(
               side: BorderSide(color: Theme.of(context).primaryColor),
               foregroundColor: Theme.of(context).primaryColor,
@@ -74,10 +213,6 @@ class ProfileInfo extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               padding: const EdgeInsets.symmetric(vertical: 12),
-            ),
-            child: Text(
-              localizationService.get('share'), 
-              style: const TextStyle(fontWeight: FontWeight.bold)
             ),
           ),
         ),

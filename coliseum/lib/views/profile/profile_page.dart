@@ -7,6 +7,7 @@ import 'package:coliseum/viewmodels/profile_view_model.dart';
 import 'package:coliseum/widgets/common/error_display.dart';
 import 'package:coliseum/widgets/common/profile_shimmer.dart';
 import 'package:coliseum/widgets/common/view_state_builder.dart';
+import 'package:coliseum/widgets/common/session_info_widget.dart';
 import 'package:coliseum/widgets/profile/post_grid.dart';
 import 'package:coliseum/widgets/profile/profile_header.dart';
 import 'package:coliseum/widgets/profile/profile_info.dart';
@@ -18,6 +19,7 @@ import 'package:coliseum/widgets/navigation/bottom_navigation_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:coliseum/services/localization_service.dart';
+import 'package:coliseum/mixins/user_activity_mixin.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -26,7 +28,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with UserActivityMixin {
   bool _hasLoadedProfile = false;
   String? _lastUserId;
 
@@ -65,6 +67,14 @@ class _ProfilePageState extends State<ProfilePage> {
           },
         ),
         actions: [
+          // Session status indicator
+          CompactSessionInfoWidget(
+            onTap: () {
+              // Show session info dialog or navigate to settings
+              context.push(AppRoutes.settings);
+            },
+          ),
+          const SizedBox(width: 8),
           IconButton(
             icon: Icon(Icons.settings, color: Theme.of(context).appBarTheme.foregroundColor),
             onPressed: () {
@@ -75,63 +85,77 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Consumer2<ProfileViewModel, AuthViewModel>(
         builder: (context, profileViewModel, authViewModel, child) {
-          // Only fetch profile when user actually changes
-          if (authViewModel.user != null && 
-              _lastUserId != authViewModel.user!.id) {
-            _lastUserId = authViewModel.user!.id;
-            _hasLoadedProfile = false;
-            // Use a microtask to avoid multiple rebuilds
+          // Get the current authenticated user
+          final currentUser = authViewModel.user;
+          
+          if (currentUser == null) {
+            return const Center(
+              child: Text('No user logged in'),
+            );
+          }
+
+          // Only fetch posts from ProfileViewModel, use user data directly from AuthViewModel
+          if (!_hasLoadedProfile) {
+            _lastUserId = currentUser.id;
+            _hasLoadedProfile = true;
+            // Fetch posts for the user
             Future.microtask(() {
               if (mounted) {
-                profileViewModel.fetchUserProfile(authViewModel.user!.id);
-                _hasLoadedProfile = true;
+                profileViewModel.fetchUserProfile(currentUser.id);
               }
             });
           }
-          
-          // Use a more efficient build pattern
-          if (profileViewModel.state == ViewState.loading) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-              ),
-            );
-          }
-          
-          final userToShow = profileViewModel.user ?? authViewModel.user;
-          if (userToShow != null) {
-            return _buildProfileContent(context, userToShow);
-          }
-          
-          return Center(
-            child: Text(
-              localizationService.get('noUserDataAvailable'),
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                // Profile Header with user data from AuthViewModel
+                ProfileHeader(user: currentUser),
+                
+                // Profile Info with user data from AuthViewModel
+                ProfileInfo(user: currentUser),
+                
+                // Session Info Widget
+                SessionInfoWidget(
+                  showExtendedInfo: true,
+                  onExtendSession: () {
+                    // Handle session extension
+                  },
+                  onRefreshSession: () {
+                    // Handle session refresh
+                  },
+                ),
+                
+                const SizedBox(height: 20),
+                
+                // Posts Grid (this comes from ProfileViewModel)
+                ViewStateBuilder(
+                  viewState: profileViewModel.state,
+                  builder: () {
+                    if (profileViewModel.posts.isEmpty) {
+                      return const Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Text(
+                          'No posts yet',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      );
+                    }
+                    return PostGrid(posts: profileViewModel.posts);
+                  },
+                  loadingWidget: const ProfileShimmer(),
+                  errorWidget: ErrorDisplay(
+                    message: profileViewModel.errorMessage ?? 'An error occurred',
+                    onRetry: () => profileViewModel.fetchUserProfile(currentUser.id),
+                  ),
+                ),
+              ],
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildProfileContent(BuildContext context, User user) {
-    return RefreshIndicator(
-      onRefresh: () {
-        if (context.read<AuthViewModel>().user != null) {
-          return context.read<ProfileViewModel>().fetchUserProfile(context.read<AuthViewModel>().user!.id);
-        }
-        return Future.value();
-      },
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ProfileHeader(user: user),
-            ProfileInfo(user: user),
-            const SizedBox(height: 24),
-            PostGrid(posts: context.read<ProfileViewModel>().posts),
-          ],
-        ),
       ),
     );
   }

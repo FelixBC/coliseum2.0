@@ -302,15 +302,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (_formKey.currentState?.validate() ?? false) {
       final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
       
-      final success = await authViewModel.updateProfile(
-        username: _usernameController.text.trim(),
-        firstName: _firstNameController.text.trim(),
-        lastName: _lastNameController.text.trim(),
-        bio: _bioController.text.trim(),
-        phoneNumber: _phoneController.text.trim(),
-      );
+      // Get current user and update with new values
+      final currentUser = authViewModel.user;
+      if (currentUser != null) {
+        final updatedUser = currentUser.copyWith(
+          username: _usernameController.text.trim(),
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+          bio: _bioController.text.trim(),
+          phoneNumber: _phoneController.text.trim(),
+        );
 
-      if (success) {
+        await authViewModel.updateProfile(updatedUser);
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Perfil actualizado exitosamente'),
