@@ -514,26 +514,52 @@ class _LoginPageState extends State<LoginPage> {
                   Consumer<AuthViewModel>(
                     builder: (context, viewModel, child) {
                       if (viewModel.errorMessage != null && viewModel.errorMessage!.isNotEmpty) {
+                        // Check if it's the "no stored user" error
+                        final isNoUserError = viewModel.errorMessage!.contains('No stored user data found');
+                        
                         return Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.red.shade50,
+                            color: isNoUserError ? Colors.orange.shade50 : Colors.red.shade50,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.red.shade200),
+                            border: Border.all(
+                              color: isNoUserError ? Colors.orange.shade200 : Colors.red.shade200,
+                            ),
                           ),
-                          child: Row(
+                          child: Column(
                             children: [
-                              Icon(Icons.error_outline, color: Colors.red.shade600, size: 20),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  viewModel.errorMessage!,
-                                  style: TextStyle(
-                                    color: Colors.red.shade700,
-                                    fontSize: 14,
+                              Row(
+                                children: [
+                                  Icon(
+                                    isNoUserError ? Icons.info_outline : Icons.error_outline,
+                                    color: isNoUserError ? Colors.orange.shade600 : Colors.red.shade600,
+                                    size: 20,
                                   ),
-                                ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      isNoUserError 
+                                          ? 'No hay sesión guardada'
+                                          : viewModel.errorMessage!,
+                                      style: TextStyle(
+                                        color: isNoUserError ? Colors.orange.shade700 : Colors.red.shade700,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
+                              if (isNoUserError) ...[
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Primero debes iniciar sesión con tu cuenta',
+                                  style: TextStyle(
+                                    color: Colors.orange.shade600,
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ],
                           ),
                         );
@@ -663,7 +689,15 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         print('=== AUTHENTICATION FAILED, SHOWING ERROR ===');
         // Error will be shown in the UI above
-        setState(() {});
+        if (context.mounted) {
+          setState(() {});
+        }
+        
+        // Check if the error is "No stored user data found" - if so, don't retry
+        if (authViewModel.errorMessage?.contains('No stored user data found') == true) {
+          print('=== NO STORED USER, STOPPING RETRY LOOP ===');
+          return; // Don't retry if there's no stored user
+        }
         
         // Wait a bit and then retry automatically (like a real sensor would)
         await Future.delayed(const Duration(seconds: 2));
@@ -674,7 +708,9 @@ class _LoginPageState extends State<LoginPage> {
       }
     } catch (e) {
       print('=== AUTHENTICATION ERROR: $e ===');
-      setState(() {});
+      if (context.mounted) {
+        setState(() {});
+      }
     }
   }
 } 

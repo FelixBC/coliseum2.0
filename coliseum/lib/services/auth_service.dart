@@ -149,6 +149,7 @@ class AuthService extends ChangeNotifier {
         final user = await _developmentAuthService.signInWithEmail(email, password);
         if (user != null) {
           _currentUser = user;
+          await _storeUserData(user); // Store user data locally
           await _sessionService.createSession(user);
           _setStatus(AuthStatus.authenticated);
           print('User signed in with development service: ${user.email}');
@@ -166,6 +167,7 @@ class AuthService extends ChangeNotifier {
         final user = await _firebaseAuthService.signInWithEmail(email, password);
         if (user != null) {
           _currentUser = user;
+          await _storeUserData(user); // Store user data locally
           await _sessionService.createSession(user);
           _setStatus(AuthStatus.authenticated);
           print('User signed in with Firebase: ${user.email}');
@@ -179,6 +181,7 @@ class AuthService extends ChangeNotifier {
           final user = await _developmentAuthService.signInWithEmail(email, password);
           if (user != null) {
             _currentUser = user;
+            await _storeUserData(user); // Store user data locally
             await _sessionService.createSession(user);
             _setStatus(AuthStatus.authenticated);
             print('User signed in with development service (fallback): ${user.email}');
@@ -376,37 +379,54 @@ class AuthService extends ChangeNotifier {
 
   Future<User?> authenticateWithBiometrics() async {
     try {
+      print('=== AUTH SERVICE: Starting biometric authentication ===');
       _setStatus(AuthStatus.loading);
       _clearError();
       
       // Check if biometrics are available
       if (!await _biometricService.isAvailable()) {
+        print('=== AUTH SERVICE: Biometrics not available ===');
         _setError('Biometric authentication is not available on this device');
         return null;
       }
       
+      print('=== AUTH SERVICE: Biometrics available, starting authentication ===');
       // Perform biometric authentication
       final isAuthenticated = await _biometricService.authenticate();
+      print('=== AUTH SERVICE: Biometric result: $isAuthenticated ===');
+      
       if (!isAuthenticated) {
+        print('=== AUTH SERVICE: Biometric authentication failed ===');
         _setError('Biometric authentication failed');
         _setStatus(AuthStatus.unauthenticated);
         return null;
       }
       
-      // If biometric auth succeeds, restore user from storage
-      final storedUser = await StorageService.getUser();
-      if (storedUser != null) {
-        _currentUser = storedUser;
-        await _sessionService.createSession(storedUser);
-        _setStatus(AuthStatus.authenticated);
-        print('User authenticated with biometrics: ${storedUser.email}');
-        return storedUser;
-      } else {
-        _setError('No stored user data found');
+      print('=== AUTH SERVICE: Biometric successful, signing in with Google ===');
+      // If biometric auth succeeds, automatically sign in with Google
+      try {
+        final user = await _googleAuthService.signInWithGoogle();
+        if (user != null) {
+          print('=== AUTH SERVICE: Google sign-in successful after biometric ===');
+          _currentUser = user;
+          await _storeUserData(user);
+          await _sessionService.createSession(user);
+          _setStatus(AuthStatus.authenticated);
+          return user;
+        } else {
+          print('=== AUTH SERVICE: Google sign-in failed after biometric ===');
+          _setError('Google sign-in failed after biometric authentication');
+          _setStatus(AuthStatus.unauthenticated);
+          return null;
+        }
+      } catch (googleError) {
+        print('=== AUTH SERVICE: Google sign-in error after biometric: $googleError ===');
+        _setError('Error signing in with Google: $googleError');
         _setStatus(AuthStatus.unauthenticated);
         return null;
       }
     } catch (e) {
+      print('=== AUTH SERVICE: Error during biometric authentication: $e ===');
       _setError('Error during biometric authentication: $e');
       return null;
     }
