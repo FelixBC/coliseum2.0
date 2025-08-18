@@ -1,9 +1,12 @@
 import 'package:coliseum/constants/routes.dart';
-import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:go_router/go_router.dart';
+import 'package:coliseum/constants/theme.dart';
+import 'package:coliseum/models/user_model.dart';
+import 'package:coliseum/services/user_service.dart';
 import 'package:coliseum/widgets/common/search_bar.dart';
-import 'package:coliseum/widgets/navigation/bottom_navigation_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MessagesPage extends StatefulWidget {
   const MessagesPage({super.key});
@@ -230,7 +233,79 @@ class _MessagesPageState extends State<MessagesPage> {
         elevation: 0,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const AppBottomNavigationBar(currentIndex: 2),
     );
+  }
+
+  Widget _buildConversationTile(Map<String, dynamic> conversation) {
+    return ListTile(
+      leading: CircleAvatar(
+        radius: 25,
+        backgroundImage: getImageProvider(conversation['avatar'] as String),
+        onBackgroundImageError: (_, __) => const Icon(Icons.person, color: Colors.white),
+      ),
+      title: Text(
+        conversation['name'] as String,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+      subtitle: Text(
+        conversation['lastMessage'] as String,
+        style: TextStyle(
+          color: Colors.grey[400],
+          fontSize: 14,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            conversation['time'] as String,
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 12,
+            ),
+          ),
+          if (conversation['unreadCount'] > 0)
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: const BoxDecoration(
+                color: Color(0xFF0095F6),
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                conversation['unreadCount'].toString(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+        ],
+      ),
+      onTap: () {
+        context.push(AppRoutes.chat, extra: conversation);
+      },
+    );
+  }
+
+  // Helper function to determine if an image is a local asset
+  bool isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('file://');
+  }
+
+  // Helper function to get the correct image provider
+  ImageProvider getImageProvider(String url) {
+    if (url.isEmpty) return const AssetImage('assets/images/logo/whitelogo.png');
+    if (isLocalAsset(url)) {
+      return AssetImage(url);
+    } else {
+      return NetworkImage(url);
+    }
   }
 } 

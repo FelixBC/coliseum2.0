@@ -22,21 +22,34 @@ class ProfileViewModel extends ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   Future<void> fetchUserProfile(String userId) async {
+    // Prevent multiple simultaneous fetches for the same user
+    if (_state == ViewState.loading && _user?.id == userId) {
+      return;
+    }
+    
     _setState(ViewState.loading);
     try {
       // Fetch profile and posts in parallel
       final futureUser = _userService.getUserProfile(userId);
       final futurePosts = _userService.getUserPosts(userId);
 
-      _user = await futureUser;
-      _posts = await futurePosts;
+      final newUser = await futureUser;
+      final newPosts = await futurePosts;
+
+      // Only update if data actually changed
+      if (_user?.id != newUser.id || _posts.length != newPosts.length) {
+        _user = newUser;
+        _posts = newPosts;
+        _setState(ViewState.idle);
+      } else {
+        _setState(ViewState.idle);
+      }
 
     } catch (e) {
       _errorMessage = e.toString();
       _setState(ViewState.error);
       return;
     }
-    _setState(ViewState.idle);
   }
 
   Future<void> updateProfile(User updatedUser) async {
@@ -52,7 +65,10 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void _setState(ViewState newState) {
-    _state = newState;
-    notifyListeners();
+    // Only update state if it actually changed
+    if (_state != newState) {
+      _state = newState;
+      notifyListeners();
+    }
   }
 } 

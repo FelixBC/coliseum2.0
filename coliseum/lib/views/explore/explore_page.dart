@@ -1,9 +1,11 @@
 import 'package:coliseum/constants/routes.dart';
+import 'package:coliseum/constants/theme.dart';
+import 'package:coliseum/models/post_model.dart';
 import 'package:coliseum/widgets/common/search_bar.dart';
-import 'package:coliseum/widgets/navigation/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ExplorePage extends StatelessWidget {
@@ -122,7 +124,145 @@ class ExplorePage extends StatelessWidget {
         elevation: 0,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const AppBottomNavigationBar(currentIndex: 1),
     );
+  }
+
+  Widget _buildPropertyCard(Map<String, dynamic> property) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: getImageWidget(property['image'] as String),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        property['title'] as String,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '\$${property['price']}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0095F6),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(Icons.location_on, color: Colors.grey[400], size: 16),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        property['location'] as String,
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(Icons.star, color: Colors.amber, size: 16),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${property['rating']}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      ' (${property['reviews']} reviews)',
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Helper function to determine if an image is a local asset
+  bool isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('file://');
+  }
+
+  // Helper function to get the correct image widget
+  Widget getImageWidget(String url) {
+    if (isLocalAsset(url)) {
+      return Image.asset(
+        url,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: 200,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            width: double.infinity,
+            height: 200,
+            color: Colors.grey[800],
+            child: const Center(
+              child: Icon(
+                Icons.image_not_supported_outlined,
+                color: Colors.grey,
+                size: 50,
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      return Image.network(
+        url,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: 200,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            width: double.infinity,
+            height: 200,
+            color: Colors.grey[800],
+            child: const Center(
+              child: Icon(
+                Icons.image_not_supported_outlined,
+                color: Colors.grey,
+                size: 50,
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 } 

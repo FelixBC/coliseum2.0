@@ -169,4 +169,33 @@ class _BookingCalendarPageState extends State<BookingCalendarPage> {
       ),
     );
   }
+
+  Widget _buildPropertyImage() {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        image: DecorationImage(
+          image: const AssetImage('assets/images/logo/whitelogo.png'), // Default image since propertyImageUrl doesn't exist
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  // Helper function to determine if an image is a local asset
+  bool isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('file://');
+  }
+
+  // Helper function to get the correct image provider
+  ImageProvider getImageProvider(String url) {
+    if (url.isEmpty) return const AssetImage('assets/images/logo/whitelogo.png');
+    if (isLocalAsset(url)) {
+      return AssetImage(url);
+    } else {
+      return NetworkImage(url);
+    }
+  }
 } 

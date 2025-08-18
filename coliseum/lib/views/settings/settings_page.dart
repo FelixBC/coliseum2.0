@@ -1,79 +1,42 @@
-import 'package:coliseum/services/settings_service.dart';
+import 'package:coliseum/constants/routes.dart';
 import 'package:coliseum/services/localization_service.dart';
+import 'package:coliseum/services/settings_service.dart';
 import 'package:coliseum/viewmodels/auth_view_model.dart';
-import 'package:coliseum/widgets/form/custom_button.dart';
-import 'package:coliseum/widgets/form/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  String _selectedLanguage = 'es';
-  bool _biometricEnabled = false;
-
-  final Map<String, String> _languages = {
-    'es': 'Español',
-    'en': 'English',
-  };
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSettings();
-  }
-
-  Future<void> _loadSettings() async {
-    final settingsService = Provider.of<SettingsService>(context, listen: false);
-    setState(() {
-      _selectedLanguage = settingsService.language;
-      _biometricEnabled = settingsService.biometricEnabled;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final localizationService = Provider.of<LocalizationService>(context);
+    
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('Configuración'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        elevation: 0.5,
+        title: Text(
+          localizationService.get('settings'),
+          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.foregroundColor),
+          onPressed: () => context.pop(),
+        ),
       ),
-      body: Consumer3<SettingsService, AuthViewModel, LocalizationService>(
-        builder: (context, settingsService, authViewModel, localizationService, child) {
+      body: Consumer<AuthViewModel>(
+        builder: (context, authViewModel, child) {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              // Account Section
-              _buildSectionHeader('Cuenta'),
-              _buildProfileTile(authViewModel),
-              const SizedBox(height: 16),
-              
-              // Appearance Section
-              _buildSectionHeader('Apariencia'),
-              _buildDarkModeTile(settingsService),
-              _buildLanguageTile(settingsService),
-              const SizedBox(height: 16),
-              
-              // Security Section
-              _buildSectionHeader('Seguridad'),
-              _buildBiometricTile(settingsService, authViewModel),
-              _buildChangePasswordTile(authViewModel),
-              const SizedBox(height: 16),
-              
-              // About Section
-              _buildSectionHeader('Acerca de'),
-              _buildAboutTile(),
-              const SizedBox(height: 16),
-              
-              // Logout Section
-              _buildLogoutTile(authViewModel),
+              _buildProfileSection(context, authViewModel, localizationService),
+              const SizedBox(height: 24),
+              _buildSettingsSection(context, localizationService),
+              const SizedBox(height: 24),
+              _buildAccountSection(context, authViewModel, localizationService),
             ],
           );
         },
@@ -81,301 +44,249 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfileTile(AuthViewModel authViewModel) {
+  Widget _buildProfileSection(BuildContext context, AuthViewModel authViewModel, LocalizationService localizationService) {
     final user = authViewModel.user;
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(user?.profileImageUrl ?? ''),
-        radius: 25,
-      ),
-      title: Text(user?.fullName ?? user?.username ?? 'Usuario'),
-      subtitle: Text(user?.email ?? ''),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () => context.go('/profile'),
-    );
-  }
+    if (user == null) return const SizedBox.shrink();
 
-  Widget _buildDarkModeTile(SettingsService settingsService) {
-    return SwitchListTile(
-      title: const Text('Modo oscuro'),
-      subtitle: const Text('Cambiar entre tema claro y oscuro'),
-      value: settingsService.isDarkMode,
-      onChanged: (value) {
-        settingsService.toggleDarkMode();
-      },
-      secondary: Icon(
-        settingsService.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-      ),
-    );
-  }
-
-  Widget _buildLanguageTile(SettingsService settingsService) {
-    return ListTile(
-      title: const Text('Idioma'),
-      subtitle: Text(_languages[settingsService.language] ?? 'Español'),
-      leading: const Icon(Icons.language),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () => _showLanguageDialog(settingsService),
-    );
-  }
-
-  Widget _buildBiometricTile(SettingsService settingsService, AuthViewModel authViewModel) {
-    return FutureBuilder<bool>(
-      future: authViewModel.isBiometricAvailable(),
-      builder: (context, snapshot) {
-        final isAvailable = snapshot.data ?? false;
-        
-        if (!isAvailable) {
-          return const ListTile(
-            title: Text('Autenticación biométrica'),
-            subtitle: Text('No disponible en este dispositivo'),
-            leading: Icon(Icons.fingerprint),
-            enabled: false,
-          );
-        }
-
-        return SwitchListTile(
-          title: const Text('Autenticación biométrica'),
-          subtitle: const Text('Usar huella digital o Face ID'),
-          value: settingsService.biometricEnabled,
-          onChanged: (value) {
-            settingsService.setBiometricEnabled(value);
-          },
-          secondary: const Icon(Icons.fingerprint),
-        );
-      },
-    );
-  }
-
-  Widget _buildChangePasswordTile(AuthViewModel authViewModel) {
-    return ListTile(
-      title: const Text('Cambiar contraseña'),
-      subtitle: const Text('Actualizar tu contraseña de acceso'),
-      leading: const Icon(Icons.lock),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () => _showChangePasswordDialog(authViewModel),
-    );
-  }
-
-  Widget _buildAboutTile() {
-    return ListTile(
-      title: const Text('Acerca de Coliseum'),
-      subtitle: const Text('Versión 2.0.0'),
-      leading: const Icon(Icons.info),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () => _showAboutDialog(),
-    );
-  }
-
-  Widget _buildLogoutTile(AuthViewModel authViewModel) {
-    return ListTile(
-      title: const Text('Cerrar sesión'),
-      leading: const Icon(Icons.logout, color: Colors.red),
-      onTap: () => _showLogoutDialog(authViewModel),
-    );
-  }
-
-  void _showLanguageDialog(SettingsService settingsService) {
-    final localizationService = Provider.of<LocalizationService>(context, listen: false);
-    
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Seleccionar idioma'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: _languages.entries.map((entry) {
-            return RadioListTile<String>(
-              title: Text(entry.value),
-              value: entry.key,
-              groupValue: settingsService.language,
-              onChanged: (value) {
-                if (value != null) {
-                  settingsService.setLanguage(value, localizationService);
-                  Navigator.pop(context);
-                }
-              },
-            );
-          }).toList(),
+    return Card(
+      color: Theme.of(context).colorScheme.surface,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundImage: getImageProvider(user.profileImageUrl),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user.username,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    user.email,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.onSurface),
+              onPressed: () => context.push(AppRoutes.editProfile),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
-          ),
-        ],
       ),
     );
   }
 
-  void _showChangePasswordDialog(AuthViewModel authViewModel) {
-    final currentPasswordController = TextEditingController();
-    final newPasswordController = TextEditingController();
-    final confirmPasswordController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Cambiar contraseña'),
-        content: Form(
-          key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomTextField(
-                controller: currentPasswordController,
-                hintText: 'Contraseña actual',
-                obscureText: true,
-                prefixIcon: Icons.lock_outline,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'La contraseña actual es obligatoria';
-                  }
-                  return null;
-                },
+  Widget _buildSettingsSection(BuildContext context, LocalizationService localizationService) {
+    return Card(
+      color: Theme.of(context).colorScheme.surface,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              localizationService.get('settings'),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 12),
-              CustomTextField(
-                controller: newPasswordController,
-                hintText: 'Nueva contraseña',
-                obscureText: true,
-                prefixIcon: Icons.lock_outline,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'La nueva contraseña es obligatoria';
-                  }
-                  if (value.length < 6) {
-                    return 'Mínimo 6 caracteres';
-                  }
-                  if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$').hasMatch(value)) {
-                    return 'Debe tener mayúscula, minúscula y número';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              CustomTextField(
-                controller: confirmPasswordController,
-                hintText: 'Confirmar nueva contraseña',
-                obscureText: true,
-                prefixIcon: Icons.lock_outline,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Confirma la nueva contraseña';
-                  }
-                  if (value != newPasswordController.text) {
-                    return 'Las contraseñas no coinciden';
-                  }
-                  return null;
-                },
-              ),
-            ],
+            ),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+          _buildSettingTile(
+            context,
+            icon: Icons.language,
+            title: localizationService.get('language'),
+            subtitle: localizationService.getCurrentLanguageName(),
+            onTap: () => _showLanguageDialog(context, localizationService),
           ),
-          Consumer<AuthViewModel>(
-            builder: (context, authViewModel, child) {
-              return ElevatedButton(
-                onPressed: authViewModel.isLoading ? null : () async {
-                  if (formKey.currentState?.validate() ?? false) {
-                    final success = await authViewModel.changePassword(
-                      currentPasswordController.text,
-                      newPasswordController.text,
-                    );
-                    if (success) {
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Contraseña actualizada exitosamente'),
-                        ),
-                      );
-                    }
-                  }
-                },
-                child: authViewModel.isLoading 
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Text('Cambiar'),
+          Consumer<SettingsService>(
+            builder: (context, settingsService, child) {
+              return _buildSettingTile(
+                context,
+                icon: settingsService.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                title: localizationService.get(settingsService.isDarkMode ? 'darkMode' : 'lightMode'),
+                subtitle: settingsService.isDarkMode 
+                    ? localizationService.get('enabled') 
+                    : localizationService.get('disabled'),
+                onTap: () => settingsService.toggleDarkMode(),
+                trailing: Switch(
+                  value: settingsService.isDarkMode,
+                  onChanged: (value) => settingsService.toggleDarkMode(),
+                  activeColor: Theme.of(context).primaryColor,
+                ),
               );
             },
           ),
+          _buildSettingTile(
+            context,
+            icon: Icons.notifications,
+            title: localizationService.get('notifications'),
+            subtitle: localizationService.get('enabled'),
+            onTap: () {},
+          ),
+          _buildSettingTile(
+            context,
+            icon: Icons.privacy_tip,
+            title: localizationService.get('privacy'),
+            subtitle: localizationService.get('public'),
+            onTap: () {},
+          ),
         ],
       ),
     );
   }
 
-  void _showAboutDialog() {
+  Widget _buildAccountSection(BuildContext context, AuthViewModel authViewModel, LocalizationService localizationService) {
+    return Card(
+      color: Theme.of(context).colorScheme.surface,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              localizationService.get('account'),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          _buildSettingTile(
+            context,
+            icon: Icons.info,
+            title: localizationService.get('about'),
+            subtitle: '${localizationService.get('version')} 1.0.0',
+            onTap: () {},
+          ),
+          _buildSettingTile(
+            context,
+            icon: Icons.logout,
+            title: localizationService.get('logout'),
+            subtitle: '',
+            onTap: () => authViewModel.logout(),
+            textColor: Colors.red,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettingTile(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+    Color? textColor,
+    Widget? trailing,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: textColor ?? Theme.of(context).colorScheme.onSurface),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: textColor ?? Theme.of(context).colorScheme.onSurface,
+          fontSize: 16,
+        ),
+      ),
+      subtitle: subtitle.isNotEmpty
+          ? Text(
+              subtitle,
+              style: TextStyle(
+                color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 14,
+              ),
+            )
+          : null,
+      trailing: trailing ?? Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurfaceVariant),
+      onTap: onTap,
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context, LocalizationService localizationService) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Acerca de Coliseum'),
-        content: const Column(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: Text(
+          localizationService.get('language'),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
+        content: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Coliseum 2.0'),
-            SizedBox(height: 8),
-            Text('Una plataforma social moderna'),
-            SizedBox(height: 8),
-            Text('Versión: 2.0.0'),
-            SizedBox(height: 8),
-            Text('Desarrollado con Flutter'),
+            ListTile(
+              title: Text('English', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+              leading: Radio<String>(
+                value: 'en',
+                groupValue: localizationService.currentLanguage,
+                onChanged: (value) {
+                  if (value != null) {
+                    localizationService.setLanguage(value);
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ),
+            ListTile(
+              title: Text('Español', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+              leading: Radio<String>(
+                value: 'es',
+                groupValue: localizationService.currentLanguage,
+                onChanged: (value) {
+                  if (value != null) {
+                    localizationService.setLanguage(value);
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cerrar'),
+            child: Text(
+              localizationService.get('cancel'),
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+            ),
           ),
         ],
       ),
     );
   }
 
-  void _showLogoutDialog(AuthViewModel authViewModel) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Cerrar sesión'),
-        content: const Text('¿Estás seguro de que quieres cerrar sesión?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              await authViewModel.logout();
-              Navigator.pop(context);
-              context.go('/auth');
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Cerrar sesión'),
-          ),
-        ],
-      ),
-    );
+  // Helper function to determine if an image is a local asset
+  bool isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('file://');
+  }
+
+  // Helper function to get the correct image provider
+  ImageProvider getImageProvider(String url) {
+    if (url.isEmpty) return const AssetImage('assets/images/logo/whitelogo.png');
+    if (isLocalAsset(url)) {
+      return AssetImage(url);
+    } else {
+      return NetworkImage(url);
+    }
   }
 } 

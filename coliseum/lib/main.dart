@@ -11,6 +11,7 @@ import 'package:coliseum/services/settings_service.dart';
 import 'package:coliseum/viewmodels/auth_view_model.dart';
 import 'package:coliseum/viewmodels/home_view_model.dart';
 import 'package:coliseum/viewmodels/profile_view_model.dart';
+import 'package:coliseum/viewmodels/saved_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:coliseum/firebase_options.dart';
 import 'package:coliseum/services/production_auth_service.dart';
@@ -44,6 +45,9 @@ Future<void> main() async {
           create: (context) => ProfileViewModel(context.read<UserService>()),
         ),
         ChangeNotifierProvider(
+          create: (context) => SavedViewModel(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => SettingsService(),
         ),
         ChangeNotifierProvider(
@@ -62,17 +66,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
     final settingsService = Provider.of<SettingsService>(context);
-    final localizationService = Provider.of<LocalizationService>(context);
     final appRouter = AppRouter(authViewModel);
 
-    return MaterialApp.router(
-      title: 'Coliseum',
-      theme: settingsService.getTheme(),
-      locale: localizationService.currentLocale,
-      supportedLocales: LocalizationService.supportedLocales,
-      localizationsDelegates: LocalizationService.localizationsDelegates,
-      routerConfig: appRouter.router,
-      debugShowCheckedModeBanner: false,
+    return Consumer<SettingsService>(
+      builder: (context, settingsService, child) {
+        return MaterialApp.router(
+          title: 'Coliseum',
+          theme: settingsService.currentTheme,
+          routerConfig: appRouter.router,
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 } 

@@ -1,9 +1,12 @@
 import 'package:coliseum/constants/routes.dart';
+import 'package:coliseum/constants/theme.dart';
+import 'package:coliseum/models/post_model.dart';
 import 'package:coliseum/viewmodels/saved_view_model.dart';
 import 'package:coliseum/widgets/common/error_display.dart';
 import 'package:coliseum/widgets/common/post_list_shimmer.dart';
+import 'package:coliseum/widgets/common/view_state_builder.dart';
+import 'package:coliseum/widgets/post/post_card.dart';
 import 'package:coliseum/widgets/profile/post_grid.dart';
-import 'package:coliseum/widgets/navigation/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +84,6 @@ class _SavedPageState extends State<SavedPage> {
         elevation: 0,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const AppBottomNavigationBar(currentIndex: 4),
     );
   }
 } 

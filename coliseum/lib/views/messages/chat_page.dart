@@ -1,5 +1,8 @@
+import 'package:coliseum/constants/routes.dart';
+import 'package:coliseum/viewmodels/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -78,9 +81,7 @@ class ChatPage extends StatelessWidget {
         leading: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: CircleAvatar(
-            backgroundImage: avatar.startsWith('assets/')
-                ? AssetImage(avatar) as ImageProvider
-                : (avatar.isNotEmpty ? NetworkImage(avatar) : null),
+            backgroundImage: getImageProvider(avatar),
             radius: 20,
           ),
         ),
@@ -142,6 +143,21 @@ class ChatPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Helper function to determine if an image is a local asset
+  bool isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('file://');
+  }
+
+  // Helper function to get the correct image provider
+  ImageProvider getImageProvider(String url) {
+    if (url.isEmpty) return const AssetImage('assets/images/logo/whitelogo.png');
+    if (isLocalAsset(url)) {
+      return AssetImage(url);
+    } else {
+      return NetworkImage(url);
+    }
   }
 }
 

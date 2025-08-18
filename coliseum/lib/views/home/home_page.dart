@@ -8,7 +8,6 @@ import 'package:coliseum/widgets/common/post_list_shimmer.dart';
 import 'package:coliseum/widgets/common/view_state_builder.dart';
 import 'package:coliseum/widgets/post/post_card.dart';
 import 'package:coliseum/widgets/stories/stories_bar.dart';
-import 'package:coliseum/widgets/navigation/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -107,7 +106,6 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const AppBottomNavigationBar(currentIndex: 0),
     );
   }
   

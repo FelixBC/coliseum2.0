@@ -43,9 +43,7 @@ class PostCard extends StatelessWidget {
           CircleAvatar(
             radius: 16,
             backgroundColor: Colors.grey[200],
-            backgroundImage: post.user.profileImageUrl.startsWith('assets/')
-                ? AssetImage(post.user.profileImageUrl) as ImageProvider
-                : NetworkImage(post.user.profileImageUrl),
+            backgroundImage: getImageProvider(post.user.profileImageUrl),
             onBackgroundImageError: (_, __) => const Icon(Icons.person, color: Colors.white),
           ),
           const SizedBox(width: 8),
@@ -63,6 +61,20 @@ class PostCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Helper function to determine if an image is a local asset
+  bool isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('file://');
+  }
+
+  // Helper function to get the correct image provider
+  ImageProvider getImageProvider(String url) {
+    if (isLocalAsset(url)) {
+      return AssetImage(url);
+    } else {
+      return NetworkImage(url);
+    }
   }
 
   Widget _buildImage(BuildContext context) {

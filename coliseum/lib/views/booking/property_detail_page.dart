@@ -201,4 +201,40 @@ class PropertyDetailPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildImageGallery() {
+    return Container(
+      height: 300,
+      child: PageView.builder(
+        itemCount: 1, // Since Post only has imageUrl, not images array
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              image: DecorationImage(
+                image: getImageProvider(post.imageUrl),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Helper function to determine if an image is a local asset
+  bool isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('file://');
+  }
+
+  // Helper function to get the correct image provider
+  ImageProvider getImageProvider(String url) {
+    if (url.isEmpty) return const AssetImage('assets/images/logo/whitelogo.png');
+    if (isLocalAsset(url)) {
+      return AssetImage(url);
+    } else {
+      return NetworkImage(url);
+    }
+  }
 } 

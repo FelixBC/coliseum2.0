@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:coliseum/services/localization_service.dart';
+import 'package:coliseum/constants/theme.dart';
 
 class SettingsService extends ChangeNotifier {
   static const String _darkModeKey = 'dark_mode';
@@ -54,29 +55,6 @@ class SettingsService extends ChangeNotifier {
     notifyListeners();
   }
 
-  ThemeData getTheme() {
-    return _isDarkMode ? _darkTheme : _lightTheme;
-  }
-
-  static final _lightTheme = ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: Colors.blue,
-    scaffoldBackgroundColor: Colors.white,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.white,
-      foregroundColor: Colors.black,
-      elevation: 0,
-    ),
-  );
-
-  static final _darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    primarySwatch: Colors.blue,
-    scaffoldBackgroundColor: Colors.black,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.black,
-      foregroundColor: Colors.white,
-      elevation: 0,
-    ),
-  );
+  // Get the current theme based on dark mode setting
+  ThemeData get currentTheme => _isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
 } 

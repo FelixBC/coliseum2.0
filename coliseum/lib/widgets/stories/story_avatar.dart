@@ -8,6 +8,20 @@ class StoryAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Helper function to determine if an image is a local asset
+    bool isLocalAsset(String url) {
+      return url.startsWith('assets/') || url.startsWith('file://');
+    }
+
+    // Helper function to get the correct image provider
+    ImageProvider getImageProvider(String url) {
+      if (isLocalAsset(url)) {
+        return AssetImage(url);
+      } else {
+        return NetworkImage(url);
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6.0),
       child: Column(
@@ -27,9 +41,7 @@ class StoryAvatar extends StatelessWidget {
               backgroundColor: Theme.of(context).brightness == Brightness.dark 
                   ? Colors.grey[900] 
                   : Colors.grey[300],
-              backgroundImage: story.imageUrl.startsWith('assets/')
-                  ? AssetImage(story.imageUrl) as ImageProvider
-                  : NetworkImage(story.imageUrl),
+              backgroundImage: getImageProvider(story.imageUrl),
               onBackgroundImageError: (_, __) => Icon(
                 Icons.person, 
                 color: Theme.of(context).brightness == Brightness.dark 

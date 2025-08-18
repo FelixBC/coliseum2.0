@@ -14,6 +14,7 @@ import 'package:coliseum/views/explore/explore_page.dart';
 import 'package:coliseum/views/home/home_page.dart';
 import 'package:coliseum/views/messages/messages_page.dart';
 import 'package:coliseum/views/messages/chat_page.dart';
+import 'package:coliseum/views/navigation/main_layout.dart';
 import 'package:coliseum/views/profile/profile_page.dart';
 import 'package:coliseum/views/profile/edit_profile_page.dart';
 import 'package:coliseum/views/saved/saved_page.dart';
@@ -30,19 +31,27 @@ class AppRouter {
   late final GoRouter router = GoRouter(
     refreshListenable: authViewModel,
     initialLocation: AppRoutes.home,
-    redirect: (BuildContext context, GoRouterState state) {
-      final bool onAuthRoute = state.matchedLocation == AppRoutes.auth || state.matchedLocation == '/auth/register';
+    redirect: (BuildContext context, GoRouterState state) async {
+      // Don't redirect if we're already loading or updating
+      if (authViewModel.isLoading) {
+        return null;
+      }
 
+      final bool onAuthRoute = state.matchedLocation == AppRoutes.auth || 
+                              state.matchedLocation == '/auth/register';
       final bool loggedIn = authViewModel.isAuthenticated;
 
+      // If not logged in and not on auth route, redirect to auth
       if (!loggedIn && !onAuthRoute) {
         return AppRoutes.auth;
       }
 
+      // If logged in and on auth route, redirect to home
       if (loggedIn && onAuthRoute) {
         return AppRoutes.home;
       }
 
+      // No redirect needed
       return null;
     },
     routes: <RouteBase>[
@@ -59,23 +68,23 @@ class AppRouter {
       // Main app routes
       GoRoute(
         path: AppRoutes.home,
-        builder: (context, state) => const HomePage(),
+        builder: (context, state) => const MainLayout(),
       ),
       GoRoute(
         path: AppRoutes.explore,
-        builder: (context, state) => const ExplorePage(),
+        builder: (context, state) => const MainLayout(),
       ),
       GoRoute(
         path: AppRoutes.messages,
-        builder: (context, state) => const MessagesPage(),
+        builder: (context, state) => const MainLayout(),
       ),
       GoRoute(
         path: AppRoutes.myProfile,
-        builder: (context, state) => const ProfilePage(),
+        builder: (context, state) => const MainLayout(),
       ),
       GoRoute(
         path: AppRoutes.saved,
-        builder: (context, state) => const SavedPage(),
+        builder: (context, state) => const MainLayout(),
       ),
       
       // Other routes

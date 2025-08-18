@@ -1,74 +1,57 @@
 import 'package:coliseum/constants/routes.dart';
+import 'package:coliseum/services/localization_service.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class AppBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
+  final Function(int) onTabTapped;
   
   const AppBottomNavigationBar({
     super.key,
     required this.currentIndex,
+    required this.onTabTapped,
   });
-
-  void _onTap(BuildContext context, int index) {
-    String route;
-    switch (index) {
-      case 0:
-        route = AppRoutes.home;
-        break;
-      case 1:
-        route = AppRoutes.explore;
-        break;
-      case 2:
-        route = AppRoutes.messages;
-        break;
-      case 3:
-        route = AppRoutes.myProfile;
-        break;
-      default:
-        route = AppRoutes.home;
-    }
-    
-    if (context.mounted) {
-      context.go(route);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 6.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          _buildTabItem(
-            context: context,
-            icon: Icons.home_outlined,
-            label: 'Home',
-            index: 0,
+    return Consumer<LocalizationService>(
+      builder: (context, localizationService, child) {
+        return BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 6.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _buildTabItem(
+                context: context,
+                icon: Icons.home_outlined,
+                label: localizationService.get('home'),
+                index: 0,
+              ),
+              _buildTabItem(
+                context: context,
+                icon: Icons.search_outlined,
+                label: localizationService.get('explore'),
+                index: 1,
+              ),
+              const SizedBox(width: 48), // Space for the FAB
+              _buildTabItem(
+                context: context,
+                icon: Icons.message_outlined,
+                label: localizationService.get('messages'),
+                index: 2,
+              ),
+              _buildTabItem(
+                context: context,
+                icon: Icons.person_outline,
+                label: localizationService.get('profile'),
+                index: 3,
+              ),
+            ],
           ),
-          _buildTabItem(
-            context: context,
-            icon: Icons.search_outlined,
-            label: 'Explore',
-            index: 1,
-          ),
-          const SizedBox(width: 48), // Space for the FAB
-          _buildTabItem(
-            context: context,
-            icon: Icons.message_outlined,
-            label: 'Messages',
-            index: 2,
-          ),
-          _buildTabItem(
-            context: context,
-            icon: Icons.person_outline,
-            label: 'Profile',
-            index: 3,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -81,7 +64,7 @@ class AppBottomNavigationBar extends StatelessWidget {
     final bool isSelected = currentIndex == index;
     return Expanded(
       child: InkWell(
-        onTap: () => _onTap(context, index),
+        onTap: () => onTabTapped(index),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(

@@ -26,30 +26,55 @@ class AuthViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
+  // Prevent multiple rapid state changes
+  bool _isUpdating = false;
+
   void _clearError() {
-    _errorMessage = null;
-    notifyListeners();
+    if (_errorMessage != null) {
+      _errorMessage = null;
+      if (!_isUpdating) {
+        notifyListeners();
+      }
+    }
   }
 
   void _setError(String message) {
-    _errorMessage = message;
-    notifyListeners();
+    if (_errorMessage != message) {
+      _errorMessage = message;
+      if (!_isUpdating) {
+        notifyListeners();
+      }
+    }
   }
 
   // Regular email/password login
   Future<bool> login(String email, String password) async {
+    // Prevent multiple simultaneous login attempts
+    if (_isLoading || _isUpdating) return false;
+    
     _isLoading = true;
+    _isUpdating = true;
     _clearError();
-    notifyListeners();
-
+    
     try {
-      _user = await _prodAuthService.login(email, password);
-      _isLoading = false;
-      notifyListeners();
-      return true;
+      final newUser = await _prodAuthService.login(email, password);
+      
+      // Only update if user actually changed
+      if (_user?.id != newUser.id) {
+        _user = newUser;
+        _isLoading = false;
+        _isUpdating = false;
+        notifyListeners();
+        return true;
+      } else {
+        _isLoading = false;
+        _isUpdating = false;
+        return true;
+      }
     } catch (e) {
       _setError(e.toString());
       _isLoading = false;
+      _isUpdating = false;
       notifyListeners();
       return false;
     }
@@ -57,19 +82,32 @@ class AuthViewModel extends ChangeNotifier {
 
   // Google Sign In
   Future<bool> signInWithGoogle() async {
+    // Prevent multiple simultaneous sign-in attempts
+    if (_isLoading || _isUpdating) return false;
+    
     _isLoading = true;
+    _isUpdating = true;
     _clearError();
-    notifyListeners();
 
     try {
-      final user = await _prodAuthService.signInWithGoogle();
-      _user = user;
-      _isLoading = false;
-      notifyListeners();
-      return true;
+      final newUser = await _prodAuthService.signInWithGoogle();
+      
+      // Only update if user actually changed
+      if (_user?.id != newUser.id) {
+        _user = newUser;
+        _isLoading = false;
+        _isUpdating = false;
+        notifyListeners();
+        return true;
+      } else {
+        _isLoading = false;
+        _isUpdating = false;
+        return true;
+      }
     } catch (e) {
       _setError('Error signing in with Google: ${e.toString()}');
       _isLoading = false;
+      _isUpdating = false;
       notifyListeners();
       return false;
     }
@@ -77,15 +115,19 @@ class AuthViewModel extends ChangeNotifier {
 
   // Biometric authentication
   Future<bool> authenticateWithBiometrics() async {
+    // Prevent multiple simultaneous biometric attempts
+    if (_isLoading || _isUpdating) return false;
+    
     _isLoading = true;
+    _isUpdating = true;
     _clearError();
-    notifyListeners();
 
     try {
       final isAvailable = await _biometricService.isBiometricAvailable();
       if (!isAvailable) {
         _setError('Biometric authentication is not available');
         _isLoading = false;
+        _isUpdating = false;
         notifyListeners();
         return false;
       }
@@ -94,25 +136,37 @@ class AuthViewModel extends ChangeNotifier {
       if (success) {
         // For demo purposes, we'll use a mock user
         // In a real app, you'd retrieve the stored user credentials
-        _user = User(
+        final newUser = User(
           id: 'biometric_user',
           username: 'biometric_user',
           email: 'biometric@coliseum.com',
           profileImageUrl: 'https://i.pravatar.cc/150?u=biometric',
           authProvider: 'biometric',
         );
-        _isLoading = false;
-        notifyListeners();
-        return true;
+        
+        // Only update if user actually changed
+        if (_user?.id != newUser.id) {
+          _user = newUser;
+          _isLoading = false;
+          _isUpdating = false;
+          notifyListeners();
+          return true;
+        } else {
+          _isLoading = false;
+          _isUpdating = false;
+          return true;
+        }
       } else {
         _setError('Biometric authentication failed');
         _isLoading = false;
+        _isUpdating = false;
         notifyListeners();
         return false;
       }
     } catch (e) {
       _setError('Error with biometric authentication: ${e.toString()}');
       _isLoading = false;
+      _isUpdating = false;
       notifyListeners();
       return false;
     }
@@ -120,18 +174,22 @@ class AuthViewModel extends ChangeNotifier {
 
   // Password reset
   Future<bool> resetPassword(String email) async {
+    if (_isLoading || _isUpdating) return false;
+    
     _isLoading = true;
+    _isUpdating = true;
     _clearError();
-    notifyListeners();
 
     try {
       await _prodAuthService.sendPasswordResetEmail(email);
       _isLoading = false;
+      _isUpdating = false;
       notifyListeners();
       return true;
     } catch (e) {
       _setError('Error resetting password: ${e.toString()}');
       _isLoading = false;
+      _isUpdating = false;
       notifyListeners();
       return false;
     }
@@ -146,17 +204,17 @@ class AuthViewModel extends ChangeNotifier {
     String? phoneNumber,
     String? profileImageUrl,
   }) async {
-    if (_user == null) return false;
+    if (_user == null || _isLoading || _isUpdating) return false;
 
     _isLoading = true;
+    _isUpdating = true;
     _clearError();
-    notifyListeners();
 
     try {
       // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 500));
       
-      _user = _user!.copyWith(
+      final updatedUser = _user!.copyWith(
         username: username,
         firstName: firstName,
         lastName: lastName,
@@ -165,12 +223,22 @@ class AuthViewModel extends ChangeNotifier {
         profileImageUrl: profileImageUrl,
       );
       
-      _isLoading = false;
-      notifyListeners();
-      return true;
+      // Only update if user actually changed
+      if (_user != updatedUser) {
+        _user = updatedUser;
+        _isLoading = false;
+        _isUpdating = false;
+        notifyListeners();
+        return true;
+      } else {
+        _isLoading = false;
+        _isUpdating = false;
+        return true;
+      }
     } catch (e) {
       _setError('Error updating profile: ${e.toString()}');
       _isLoading = false;
+      _isUpdating = false;
       notifyListeners();
       return false;
     }
@@ -178,48 +246,76 @@ class AuthViewModel extends ChangeNotifier {
 
   // Change password
   Future<bool> changePassword(String currentPassword, String newPassword) async {
+    if (_isLoading || _isUpdating) return false;
+    
     _isLoading = true;
+    _isUpdating = true;
     _clearError();
-    notifyListeners();
 
     try {
       await _prodAuthService.updatePassword(newPassword);
       _isLoading = false;
+      _isUpdating = false;
       notifyListeners();
       return true;
     } catch (e) {
       _setError('Error changing password: ${e.toString()}');
       _isLoading = false;
+      _isUpdating = false;
       notifyListeners();
       return false;
     }
   }
 
   Future<void> signUp(String username, String email, String password) async {
+    if (_isLoading || _isUpdating) return;
+    
     _isLoading = true;
+    _isUpdating = true;
     _clearError();
-    notifyListeners();
 
     try {
-      _user = await _prodAuthService.signUp(username, email, password);
-      _isLoading = false;
-      notifyListeners();
+      final newUser = await _prodAuthService.signUp(username, email, password);
+      
+      // Only update if user actually changed
+      if (_user?.id != newUser.id) {
+        _user = newUser;
+        _isLoading = false;
+        _isUpdating = false;
+        notifyListeners();
+      } else {
+        _isLoading = false;
+        _isUpdating = false;
+      }
     } catch (e) {
       _setError(e.toString());
       _isLoading = false;
+      _isUpdating = false;
       notifyListeners();
     }
   }
 
   Future<void> logout() async {
+    if (_isLoading || _isUpdating) return;
+    
+    _isUpdating = true;
+    
     try {
       await _authService.logout();
       await _prodAuthService.logout();
-      _user = null;
-      _clearError();
-      notifyListeners();
+      
+      // Only update if user actually changed
+      if (_user != null) {
+        _user = null;
+        _clearError();
+        _isUpdating = false;
+        notifyListeners();
+      } else {
+        _isUpdating = false;
+      }
     } catch (e) {
       _setError('Error logging out: ${e.toString()}');
+      _isUpdating = false;
       notifyListeners();
     }
   }

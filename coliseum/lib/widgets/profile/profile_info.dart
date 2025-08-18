@@ -1,5 +1,7 @@
 import 'package:coliseum/models/user_model.dart';
+import 'package:coliseum/services/localization_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileInfo extends StatelessWidget {
   final User user;
@@ -8,6 +10,8 @@ class ProfileInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizationService = Provider.of<LocalizationService>(context);
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -15,45 +19,48 @@ class ProfileInfo extends StatelessWidget {
         children: [
           Text(
             user.username,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onSurface,
               fontFamily: 'SF Pro Display',
             ),
           ),
           const SizedBox(height: 4),
           Text(
             user.bio ?? '',
-            style: const TextStyle(
-              color: Color(0xFFB3B3B3),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 15,
               fontFamily: 'SF Pro Text',
             ),
           ),
           const SizedBox(height: 16),
-          _buildActionButtons(context),
+          _buildActionButtons(context, localizationService),
         ],
       ),
     );
   }
 
-  Widget _buildActionButtons(BuildContext context) {
+  Widget _buildActionButtons(BuildContext context, LocalizationService localizationService) {
     return Row(
       children: [
         Expanded(
           child: ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF0095F6),
-              foregroundColor: Colors.white,
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
               elevation: 2,
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
-            child: const Text('Editar Perfil', style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              localizationService.get('editProfile'), 
+              style: const TextStyle(fontWeight: FontWeight.bold)
+            ),
           ),
         ),
         const SizedBox(width: 8),
@@ -61,14 +68,17 @@ class ProfileInfo extends StatelessWidget {
           child: OutlinedButton(
             onPressed: () {},
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Color(0xFF0095F6)),
-              foregroundColor: Color(0xFF0095F6),
+              side: BorderSide(color: Theme.of(context).primaryColor),
+              foregroundColor: Theme.of(context).primaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
-            child: const Text('Compartir', style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              localizationService.get('share'), 
+              style: const TextStyle(fontWeight: FontWeight.bold)
+            ),
           ),
         ),
       ],

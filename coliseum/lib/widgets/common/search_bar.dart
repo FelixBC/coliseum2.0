@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:coliseum/services/localization_service.dart';
+import 'package:provider/provider.dart';
 
 class CustomSearchBar extends StatefulWidget {
   final void Function(String)? onSearch;
@@ -50,6 +52,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localizationService = Provider.of<LocalizationService>(context, listen: false);
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,7 +67,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             controller: _controller,
             maxLength: 50,
             decoration: InputDecoration(
-              hintText: widget.hintText ?? 'Buscar destinos',
+              hintText: widget.hintText ?? localizationService.get('search'),
               border: InputBorder.none,
               icon: const Icon(Icons.search),
               counterText: '',

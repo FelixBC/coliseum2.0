@@ -83,7 +83,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               child: Column(
                 children: [
                   // Profile Image Section
-                  _buildProfileImageSection(authViewModel),
+                  _buildProfileImage(),
                   const SizedBox(height: 24),
                   
                   // Error message display
@@ -211,48 +211,52 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget _buildProfileImageSection(AuthViewModel authViewModel) {
-    final user = authViewModel.user;
-    
-    return Column(
-      children: [
-        Stack(
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(user?.profileImageUrl ?? ''),
-              onBackgroundImageError: (exception, stackTrace) {
-                // Handle image loading error
-              },
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.camera_alt,
-                  color: Colors.white,
-                  size: 20,
-                ),
+  Widget _buildProfileImage() {
+    final user = Provider.of<AuthViewModel>(context).user;
+    return Center(
+      child: Stack(
+        children: [
+          CircleAvatar(
+            radius: 50,
+            backgroundColor: Colors.grey[200],
+            backgroundImage: getImageProvider(user?.profileImageUrl ?? ''),
+            onBackgroundImageError: (_, __) => const Icon(Icons.person, color: Colors.white, size: 50),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.camera_alt, color: Colors.white),
+                onPressed: _pickImage,
               ),
             ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        TextButton(
-          onPressed: () => _showImagePickerDialog(),
-          child: const Text('Cambiar foto de perfil'),
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
-  void _showImagePickerDialog() {
+  // Helper function to determine if an image is a local asset
+  bool isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('file://');
+  }
+
+  // Helper function to get the correct image provider
+  ImageProvider getImageProvider(String url) {
+    if (url.isEmpty) return const AssetImage('assets/images/logo/whitelogo.png');
+    if (isLocalAsset(url)) {
+      return AssetImage(url);
+    } else {
+      return NetworkImage(url);
+    }
+  }
+
+  void _pickImage() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

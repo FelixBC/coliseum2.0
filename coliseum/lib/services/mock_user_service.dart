@@ -104,15 +104,107 @@ class MockUserService implements UserService {
 
   @override
   Future<User> getUserProfile(String userId) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    // In a real app, you'd fetch the user by userId
-    return _mockUser;
+    await Future.delayed(const Duration(milliseconds: 300));
+    
+    // Handle different user IDs based on authentication method
+    if (userId.contains('google_felix_blanco')) {
+      // Felix's profile for Google login
+      return User(
+        id: 'google_felix_blanco',
+        username: 'felix.blanco',
+        email: 'felixaurio17@gmail.com',
+        profileImageUrl: 'assets/images/profiles/felix.blanco_profile_photo.jpg',
+        bio: 'Desarrollador Flutter y entusiasta de la tecnología inmobiliaria | @felix.blanco',
+        postCount: 1,
+        followers: 127,
+        following: 89,
+        firstName: 'Felix',
+        lastName: 'Blanco Cabrera',
+        phoneNumber: '+1 809-555-0123',
+        dateOfBirth: DateTime(1995, 6, 15),
+        authProvider: 'google',
+        createdAt: DateTime.now().subtract(const Duration(days: 180)),
+        lastLoginAt: DateTime.now(),
+      );
+    } else if (userId.contains('el_alfa_user')) {
+      // El Alfa's profile for test login
+      return User(
+        id: 'el_alfa_user',
+        username: 'elalfaeljefe',
+        email: 'test@coliseum.com',
+        profileImageUrl: 'assets/images/profiles/elalfa.jpg',
+        bio: 'El Jefe del Dembow 🎵 | Inmobiliaria El Jefe Records | @felix.blanco',
+        postCount: 15,
+        followers: 7800000,
+        following: 15,
+        firstName: 'El Alfa',
+        lastName: 'El Jefe',
+        phoneNumber: '+1 809-555-0001',
+        dateOfBirth: DateTime(1990, 12, 4),
+        authProvider: 'email',
+        createdAt: DateTime.now().subtract(const Duration(days: 730)),
+        lastLoginAt: DateTime.now(),
+      );
+    } else {
+      // Default profile for other users
+      return _mockUser;
+    }
   }
 
   @override
   Future<List<Post>> getUserPosts(String userId) async {
-    await Future.delayed(const Duration(milliseconds: 800));
-    // In a real app, you'd fetch posts for the given userId
+    await Future.delayed(const Duration(milliseconds: 400));
+    
+    // Handle different user IDs based on authentication method
+    User userToUse;
+    int postCount;
+    
+    if (userId.contains('google_felix_blanco')) {
+      // Felix's profile - only 1 property as requested
+      userToUse = User(
+        id: 'google_felix_blanco',
+        username: 'felix.blanco',
+        email: 'felixaurio17@gmail.com',
+        profileImageUrl: 'assets/images/profiles/felix.blanco_profile_photo.jpg',
+        bio: 'Desarrollador Flutter y entusiasta de la tecnología inmobiliaria | @felix.blanco',
+        postCount: 1,
+        followers: 127,
+        following: 89,
+        firstName: 'Felix',
+        lastName: 'Blanco Cabrera',
+        phoneNumber: '+1 809-555-0123',
+        dateOfBirth: DateTime(1995, 6, 15),
+        authProvider: 'google',
+        createdAt: DateTime.now().subtract(const Duration(days: 180)),
+        lastLoginAt: DateTime.now(),
+      );
+      postCount = 1; // Only 1 property for Felix
+    } else if (userId.contains('el_alfa_user')) {
+      // El Alfa's profile - 15 properties
+      userToUse = User(
+        id: 'el_alfa_user',
+        username: 'elalfaeljefe',
+        email: 'test@coliseum.com',
+        profileImageUrl: 'assets/images/profiles/elalfa.jpg',
+        bio: 'El Jefe del Dembow 🎵 | Inmobiliaria El Jefe Records | @felix.blanco',
+        postCount: 15,
+        followers: 7800000,
+        following: 15,
+        firstName: 'El Alfa',
+        lastName: 'El Jefe',
+        phoneNumber: '+1 809-555-0001',
+        dateOfBirth: DateTime(1990, 12, 4),
+        authProvider: 'email',
+        createdAt: DateTime.now().subtract(const Duration(days: 730)),
+        lastLoginAt: DateTime.now(),
+      );
+      postCount = 15; // 15 properties for El Alfa
+    } else {
+      // Default profile
+      userToUse = _mockUser;
+      postCount = 15;
+    }
+    
     final assetImages = [
       'assets/images/properties/airbnb.jpg',
       'assets/images/properties/airbnb2.jpg',
@@ -129,11 +221,12 @@ class MockUserService implements UserService {
       'assets/images/properties/airbnb24.jpg',
       'assets/images/properties/airbnb27.jpg',
     ];
+    
     return List.generate(
-      15,
+      postCount,
       (index) => Post(
         id: 'userpost$index',
-        user: _mockUser,
+        user: userToUse,
         imageUrl: assetImages[index % assetImages.length],
         caption: 'Apartamento en Santo Domingo #${index + 1} 🏠',
         likes: 1000 + (index * 50),
